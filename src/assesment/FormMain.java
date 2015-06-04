@@ -25,7 +25,6 @@ public class FormMain extends javax.swing.JFrame {
      */
     public FormMain() {
         initComponents();
-        //Ima test lol :D
         
         //this.setExtendedState(this.getExtendedState() | FormMain.MAXIMIZED_BOTH);
         
