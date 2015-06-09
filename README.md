@@ -1,3 +1,3 @@
 # JavaAssessment
 
-Java assessment git repository
+Java assessment git repository for Green Team
