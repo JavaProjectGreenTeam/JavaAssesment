@@ -10,8 +10,6 @@ import java.util.Arrays;
 public class FormMain extends javax.swing.JFrame {
     //Initialize & Define Variables
     
-    //James' Branch
-    
     boolean panel1Visible;
     boolean panel2Visible;
     
