@@ -18,6 +18,7 @@ public class LoginScreen extends javax.swing.JFrame {
      */
     public LoginScreen() {
         initComponents();
+        this.setLocationRelativeTo(null);
         
     }
 
@@ -112,6 +113,8 @@ public class LoginScreen extends javax.swing.JFrame {
         myReg = new RegistrationForm();
         }
         myReg.setVisible(true);
+        
+        this.setVisible(false);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
