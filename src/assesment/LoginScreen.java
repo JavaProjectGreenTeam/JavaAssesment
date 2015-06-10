@@ -11,12 +11,14 @@ package assesment;
  * @author 5050630103
  */
 public class LoginScreen extends javax.swing.JFrame {
-
+        RegistrationForm myReg;
+        
     /**
      * Creates new form LoginScreen
      */
     public LoginScreen() {
         initComponents();
+        
     }
 
     /**
@@ -75,6 +77,11 @@ public class LoginScreen extends javax.swing.JFrame {
         jPanel1.add(jPasswordField2, gridBagConstraints);
 
         jButton4.setText("Create Account");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 5;
@@ -98,6 +105,14 @@ public class LoginScreen extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        if(myReg == null){
+        myReg = new RegistrationForm();
+        }
+        myReg.setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
