@@ -53,7 +53,7 @@ public class DBInterface {
     ResultSet getUser(int userId) {
         try {
             String queryString = "SELECT * FROM user"
-                    + "WHERE id = '" + userId + "'";
+                    + " WHERE id = '" + userId + "'";
             result = statement.executeQuery(queryString);
             return result;
             
@@ -67,21 +67,10 @@ public class DBInterface {
     ResultSet getUserLogin(String email, String password) {
         try {
             String queryString = "SELECT * FROM user"
-                    + "WHERE email = '" + email + "' AND password = '" + password + "'";
+                    + " WHERE email = '" + email + "' AND password = '" + password + "'";
             result = statement.executeQuery(queryString);
             
-            String updateId;
-            String updateFirstName;
-            String updateLastName;
-            String updateEmail;
-            String updatePassword;
-            String updateAccountType;
-            String updateSex;
-            String updateState;
-            String updateTown;
-            String updateDob
-            
-            updateUser();
+            updateUserLastLogin(result.getInt("id"));
             
             return result;
             
@@ -91,11 +80,32 @@ public class DBInterface {
         return null;
     }
     
+        //Update a User's last login time
+    boolean updateUserLastLogin(int userId) {
+        try {
+            String queryString = "UPDATE user"
+                    + " SET lastLogin = NOW"
+                    + " WHERE id = ?";
+            
+            PreparedStatement prepStatement = connection.prepareStatement(queryString);
+            prepStatement.setInt(1, userId);
+            
+            prepStatement.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return false;
+    }
+    
+    
         //Create a new User entry
     boolean createUser(String firstName, String lastName, String email, String password, int accountType, int sex, int state, String town, String dob) {
         try {
-            String insertString = "INSERT INTO user(id, firstName, lastName, email, password, accountType, sex, state, town, dob, lastLogin)"
-                    + "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String insertString = "INSERT INTO user"
+                    + " (id, firstName, lastName, email, password, accountType, sex, state, town, dob, lastLogin)"
+                    + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             
             PreparedStatement prepStatement = connection.prepareStatement(insertString);
             prepStatement.setNull(1, Types.NULL);
@@ -112,18 +122,18 @@ public class DBInterface {
             
             prepStatement.execute();
             
-        } catch (Exception ex) {
-            //Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
         return true;
     }
     
         //Update an existing User entry
-    boolean updateUser(int id, String firstName, String lastName, String email, String password, int accountType, int sex, int state, String town, String dob) {
+    boolean updateUser(int userId, String firstName, String lastName, String email, String password, int accountType, int sex, int state, String town, String dob) {
         try {
             String updateString = "UPDATE user"
-                    + "Set firstName = ?, lastName = ?, email = ?, password = ?, accountType = ?, sex = ?, state = ?, town = ?, dob = ?, lastLogin = ?"
-                    + "WHERE id = " + id;
+                    + " SET firstName = ?, lastName = ?, email = ?, password = ?, accountType = ?, sex = ?, state = ?, town = ?, dob = ?, lastLogin = ?"
+                    + " WHERE id = ?";
             
             PreparedStatement prepStatement = connection.prepareStatement(updateString);
             prepStatement.setString(1, firstName);
@@ -136,6 +146,7 @@ public class DBInterface {
             prepStatement.setString(8, town);
             prepStatement.setString(9, dob);
             prepStatement.setString(10, "NOW");
+            prepStatement.setInt(11, userId);
             
             prepStatement.execute();
             
@@ -148,7 +159,13 @@ public class DBInterface {
         //Delete a User based off userId
     boolean deleteUser(int userId) {
         try {
+            String deleteString = "DELETE FROM user"
+                    + " WHERE id = ?";
             
+            PreparedStatement prepStatement = connection.prepareStatement(deleteString);
+            prepStatement.setInt(1, userId);
+            
+            prepStatement.execute();
             
         } catch (SQLException ex) {
             Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
@@ -159,7 +176,16 @@ public class DBInterface {
         //Store a new hisory entry for a user
     boolean storeHistory(int userId, String accessPath) {
         try {
+            String storeString = "INSERT INTO userhistory"
+                    + " (userId, accessDate, accessPath)"
+                    + " VALUES (?, ?, ?)";
             
+            PreparedStatement prepStatement = connection.prepareStatement(storeString);
+            prepStatement.setInt(1, userId);
+            prepStatement.setString(2, "NOW");
+            prepStatement.setString(3, accessPath);
+            
+            prepStatement.execute();
             
         } catch (SQLException ex) {
             Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
