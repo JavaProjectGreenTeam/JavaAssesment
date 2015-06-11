@@ -92,6 +92,8 @@ public class DBInterface {
             
             prepStatement.execute();
             
+            return true;
+            
         } catch (SQLException ex) {
             Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -122,10 +124,12 @@ public class DBInterface {
             
             prepStatement.execute();
             
+            return true;
+            
         } catch (SQLException ex) {
             Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return true;
+        return false;
     }
     
         //Update an existing User entry
@@ -150,10 +154,12 @@ public class DBInterface {
             
             prepStatement.execute();
             
+            return true;
+            
         } catch (SQLException ex) {
             Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return true;
+        return false;
     }
     
         //Delete a User based off userId
@@ -167,10 +173,12 @@ public class DBInterface {
             
             prepStatement.execute();
             
+            return true;
+            
         } catch (SQLException ex) {
             Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return true;
+        return false;
     }
     
         //Store a new hisory entry for a user
@@ -187,10 +195,12 @@ public class DBInterface {
             
             prepStatement.execute();
             
+            return true;
+            
         } catch (SQLException ex) {
             Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return true;
+        return false;
     }
     
         //Get all history of a user
