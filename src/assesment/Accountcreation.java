@@ -11,12 +11,13 @@ package assesment;
  * @author 5050630103
  */
 public class Accountcreation extends javax.swing.JFrame {
-
+    LoginScreen myLogin;
     /**
      * Creates new form Loginsuccess
      */
     public Accountcreation() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -39,6 +40,11 @@ public class Accountcreation extends javax.swing.JFrame {
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
         jButton1.setText("Return to Login");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -65,6 +71,16 @@ public class Accountcreation extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+// back to login
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        if(myLogin == null){
+        myLogin = new LoginScreen();
+        }
+        myLogin.setVisible(true);
+        
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -28,6 +28,7 @@ public class FormMain extends javax.swing.JFrame {
      */
     public FormMain() {
         initComponents();
+        this.setLocationRelativeTo(null);
         
         this.setLocationRelativeTo(null);
         
