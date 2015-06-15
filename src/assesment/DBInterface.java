@@ -53,8 +53,12 @@ public class DBInterface {
     ResultSet getUser(int userId) {
         try {
             String queryString = "SELECT * FROM user"
-                    + " WHERE id = '" + userId + "'";
-            result = statement.executeQuery(queryString);
+                    + " WHERE id = ?";
+            
+            PreparedStatement prepStatement = connection.prepareStatement(queryString);
+            prepStatement.setInt(1, userId);
+            
+            result = prepStatement.executeQuery();
             return result;
             
         } catch (Exception ex) {
@@ -67,11 +71,14 @@ public class DBInterface {
     ResultSet getUserLogin(String email, String password) {
         try {
             String queryString = "SELECT * FROM user"
-                    + " WHERE email = '" + email + "' AND password = '" + password + "'";
-            result = statement.executeQuery(queryString);
+                    + " WHERE email = '?' AND password = '?'";
             
+            PreparedStatement prepStatement = connection.prepareStatement(queryString);
+            prepStatement.setString(1, email);
+            prepStatement.setString(2, password);
+            
+            result = prepStatement.executeQuery();
             updateUserLastLogin(result.getInt("id"));
-            
             return result;
             
         } catch (Exception ex) {
@@ -105,11 +112,11 @@ public class DBInterface {
         //Create a new User entry
     boolean createUser(String firstName, String lastName, String email, String password, int accountType, int sex, int state, String town, String dob) {
         try {
-            String insertString = "INSERT INTO user"
+            String queryString = "INSERT INTO user"
                     + " (id, firstName, lastName, email, password, accountType, sex, state, town, dob, lastLogin)"
                     + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             
-            PreparedStatement prepStatement = connection.prepareStatement(insertString);
+            PreparedStatement prepStatement = connection.prepareStatement(queryString);
             prepStatement.setNull(1, Types.NULL);
             prepStatement.setString(2, firstName);
             prepStatement.setString(3, lastName);
@@ -135,11 +142,11 @@ public class DBInterface {
         //Update an existing User entry
     boolean updateUser(int userId, String firstName, String lastName, String email, String password, int accountType, int sex, int state, String town, String dob) {
         try {
-            String updateString = "UPDATE user"
+            String queryString = "UPDATE user"
                     + " SET firstName = ?, lastName = ?, email = ?, password = ?, accountType = ?, sex = ?, state = ?, town = ?, dob = ?, lastLogin = ?"
                     + " WHERE id = ?";
             
-            PreparedStatement prepStatement = connection.prepareStatement(updateString);
+            PreparedStatement prepStatement = connection.prepareStatement(queryString);
             prepStatement.setString(1, firstName);
             prepStatement.setString(2, lastName);
             prepStatement.setString(3, email);
@@ -165,10 +172,10 @@ public class DBInterface {
         //Delete a User based off userId
     boolean deleteUser(int userId) {
         try {
-            String deleteString = "DELETE FROM user"
+            String queryString = "DELETE FROM user"
                     + " WHERE id = ?";
             
-            PreparedStatement prepStatement = connection.prepareStatement(deleteString);
+            PreparedStatement prepStatement = connection.prepareStatement(queryString);
             prepStatement.setInt(1, userId);
             
             prepStatement.execute();
@@ -184,11 +191,11 @@ public class DBInterface {
         //Store a new hisory entry for a user
     boolean storeHistory(int userId, String accessPath) {
         try {
-            String storeString = "INSERT INTO userhistory"
+            String queryString = "INSERT INTO userhistory"
                     + " (userId, accessDate, accessPath)"
                     + " VALUES (?, ?, ?)";
             
-            PreparedStatement prepStatement = connection.prepareStatement(storeString);
+            PreparedStatement prepStatement = connection.prepareStatement(queryString);
             prepStatement.setInt(1, userId);
             prepStatement.setString(2, "NOW");
             prepStatement.setString(3, accessPath);
@@ -204,35 +211,66 @@ public class DBInterface {
     }
     
         //Get all history of a user
-    ArrayList<String> getHistory(int userId) {
+    ResultSet getHistory(int userId) {
         try {
+            String queryString = "SELECT * FROM userhistory"
+                    + " WHERE userId = ?";
             
+            PreparedStatement prepStatement = connection.prepareStatement(queryString);
+            prepStatement.setInt(1, userId);
+            
+            result = prepStatement.executeQuery();
+            return result;
             
         } catch (Exception ex) {
             System.out.println("Error: " + ex.getMessage());
         }
-        return new ArrayList<String>();
+        return null;
     }
     
         //Get a selector field based off id and tableId
-    ResultSet getField(int id, int tableId) {
+    ResultSet getField(int tableId, int id) {
         try {
+            String queryString = "SELECT * FROM ?"
+                    + " WHERE id = ?";
             
+            PreparedStatement prepStatement = connection.prepareStatement(queryString);
+            prepStatement.setString(1, Tables.getById(tableId));
+            prepStatement.setInt(2, id);
+            
+            result = prepStatement.executeQuery();
+            return result;
             
         } catch (Exception ex) {
             System.out.println("Error: " + ex.getMessage());
         }
-        return new ResultSet();
+        return null;
     }
     
         //Get a field by its parent information
-    ResultSet getFieldByParent(int parentId, int parentTableId) {
+    ArrayList<ResultSet> getFieldByParent(int parentTableId, int parentId) {
         try {
+            ArrayList<ResultSet> resultArray = new ArrayList<>();
             
+            String queryString = "SELECT * FROM ?"
+                    + " WHERE parentTable = ? AND parent = ?";
+            
+            for (int i = 1; i <= 3; i++) {
+                PreparedStatement prepStatement = connection.prepareStatement(queryString);
+                prepStatement.setString(1, Tables.getById(i));
+                prepStatement.setInt(2, parentTableId);
+                prepStatement.setInt(3, parentId);
+                
+                result = prepStatement.executeQuery();
+                
+                resultArray.add(result);
+            }
+            
+            return resultArray;
             
         } catch (Exception ex) {
             System.out.println("Error: " + ex.getMessage());
         }
-        return new ResultSet();
+        return null;
     }
 }
