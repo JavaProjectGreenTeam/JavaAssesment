@@ -12,6 +12,8 @@ public class FormMain extends javax.swing.JFrame {
     boolean panel1Visible;
     boolean panel2Visible;
     
+    FormOutput formOutput;
+    
     ArrayList<String> comboDefaultArray = new ArrayList();
     ArrayList<String> combo1Array = new ArrayList<>();
     ArrayList<String> combo2Array = new ArrayList<>();
@@ -19,12 +21,14 @@ public class FormMain extends javax.swing.JFrame {
     ArrayList<String> combo4Array = new ArrayList<>();
     ArrayList<String> combo5Array = new ArrayList<>();
     ArrayList<String> combo6Array = new ArrayList<>();
-        
+    
     /**
      * Creates new form FormMain
      */
     public FormMain() {
         initComponents();
+        
+        this.setLocationRelativeTo(null);
         
         //this.setExtendedState(this.getExtendedState() | FormMain.MAXIMIZED_BOTH);
         
@@ -50,7 +54,7 @@ public class FormMain extends javax.swing.JFrame {
         combo5.setEnabled(false);
         combo6.setEnabled(false);
         
-        btnSubmit.setEnabled(false);
+        //btnSubmit.setEnabled(false);
     }
 
     /**
@@ -220,6 +224,11 @@ public class FormMain extends javax.swing.JFrame {
         btnSubmit.setMaximumSize(new java.awt.Dimension(65, 28));
         btnSubmit.setMinimumSize(new java.awt.Dimension(65, 28));
         btnSubmit.setPreferredSize(new java.awt.Dimension(65, 28));
+        btnSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubmitActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -345,6 +354,14 @@ public class FormMain extends javax.swing.JFrame {
             btnSubmit.setEnabled(false);
         }
     }//GEN-LAST:event_combo6ActionPerformed
+
+    private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+        if (formOutput == null) {
+            formOutput = new FormOutput();
+        }
+        formOutput.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnSubmitActionPerformed
 
     /**
      * @param args the command line arguments
