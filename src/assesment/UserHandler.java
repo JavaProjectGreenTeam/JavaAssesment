@@ -1,14 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Author: Ryan Gallagher
  */
 
 package assesment;
 
-/**
- *
- * @author 5050630103
- */
-public class UserHandler {
+public class UserHandler{
+    public boolean register(){
+        if(){
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean logout(){
+        if(){
+            return true;
+        }
+        return false;
+    }
 }
