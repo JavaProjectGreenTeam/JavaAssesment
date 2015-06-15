@@ -1,5 +1,5 @@
 /*
- * Author: 8100627115
+ * Author: Ryan Gallagher
  */
 
 package assesment;
