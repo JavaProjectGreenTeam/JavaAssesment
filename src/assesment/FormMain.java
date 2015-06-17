@@ -7,6 +7,7 @@ import java.util.Arrays;
  *
  * @author 3100298414
  */
+
 public class FormMain extends javax.swing.JFrame {
     //Initialize & Define Variables
     
@@ -82,7 +83,7 @@ public class FormMain extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         btnExit = new javax.swing.JButton();
         btnSubmit = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        lbUserID = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -247,13 +248,20 @@ public class FormMain extends javax.swing.JFrame {
         gridBagConstraints.weightx = 0.2;
         jPanel1.add(jPanel3, gridBagConstraints);
 
-        jLabel3.setText("Logged In User");
+        lbUserID.setText("Logged In User");
+        lbUserID.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                lbUserIDInputMethodTextChanged(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 0);
-        jPanel1.add(jLabel3, gridBagConstraints);
+        jPanel1.add(lbUserID, gridBagConstraints);
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Options...", "Edit Information", "Log Out" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -365,6 +373,12 @@ public class FormMain extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btnSubmitActionPerformed
 
+    private void lbUserIDInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_lbUserIDInputMethodTextChanged
+        // TODO add your handling code here:
+//        System.getProperty(firstName);
+//        String queryString = "SELECT firstName FROM user WHERE id = ?";
+    }//GEN-LAST:event_lbUserIDInputMethodTextChanged
+
     /**
      * @param args the command line arguments
      */
@@ -411,12 +425,12 @@ public class FormMain extends javax.swing.JFrame {
     private javax.swing.JComboBox combo6;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSplitPane jSplitPane1;
+    public javax.swing.JLabel lbUserID;
     // End of variables declaration//GEN-END:variables
 }

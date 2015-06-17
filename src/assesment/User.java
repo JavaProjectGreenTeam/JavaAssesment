@@ -16,8 +16,21 @@ public class User {
     private String town;
     private String dob;
 
-    public boolean isAdmin(){
-        if(this.accountType == 1){
+    User(int userId, String firstName, String lastName, String email, String password, int accountType, int sex, int state, String town, String dob) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.accountType = accountType;
+        this.sex = sex;
+        this.state = state;
+        this.town = town;
+        this.dob = dob;
+    }
+    
+    public boolean isAdmin() {
+        if (this.accountType == 1) {
             return true;
         }
         return false;
@@ -63,34 +76,6 @@ public class User {
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    /**
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * @param email the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     /**
@@ -161,5 +146,33 @@ public class User {
      */
     public void setDob(String dob) {
         this.dob = dob;
+    }
+
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

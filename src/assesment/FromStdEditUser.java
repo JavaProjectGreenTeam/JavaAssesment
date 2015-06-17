@@ -3,23 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package assesment;
+    
+
 
 /**
  *
  * @author 5100246815
  */
-public class FromStdEditUser extends javax.swing.JFrame {
-
+public class FromStdEditUser   extends  javax.swing.JFrame {
+    
     /**
      * Creates new form eduser
      */
-    public FromStdEditUser() {
+    FromStdEditUser EditMyAcc;
+    FormMain myhome;
+    public FromStdEditUser() 
+    {
         initComponents();
         this.setLocationRelativeTo(null);
     }
-
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,7 +39,7 @@ public class FromStdEditUser extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         btnSub = new javax.swing.JButton();
-        btnCan = new javax.swing.JButton();
+        btnExit = new javax.swing.JButton();
         btnHome = new javax.swing.JButton();
         lblFname = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
@@ -96,19 +100,33 @@ public class FromStdEditUser extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(6, 0, 4, 18);
         jPanel1.add(btnSub, gridBagConstraints);
 
-        btnCan.setLabel("Cancel");
+        btnExit.setText("Exit");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(6, 0, 4, 18);
-        jPanel1.add(btnCan, gridBagConstraints);
+        jPanel1.add(btnExit, gridBagConstraints);
 
         btnHome.setText("Home");
+        btnHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHomeActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(6, 0, 4, 18);
         jPanel1.add(btnHome, gridBagConstraints);
 
@@ -354,6 +372,21 @@ public class FromStdEditUser extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSubActionPerformed
 
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
+        // TODO add your handling code here:
+        if (myhome == null){
+            myhome = new FormMain();
+        }
+        myhome.setVisible(true);
+        this.setVisible(false);
+        
+    }//GEN-LAST:event_btnHomeActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -390,7 +423,7 @@ public class FromStdEditUser extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCan;
+    private javax.swing.JButton btnExit;
     private javax.swing.JButton btnHome;
     private javax.swing.JButton btnSub;
     private javax.swing.ButtonGroup buttonGroupSex;

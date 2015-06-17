@@ -113,8 +113,8 @@ public class DBInterface {
     boolean createUser(String firstName, String lastName, String email, String password, int accountType, int sex, int state, String town, String dob) {
         try {
             String queryString = "INSERT INTO user"
-                    + " (id, firstName, lastName, email, password, accountType, sex, state, town, dob, lastLogin)"
-                    + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    + " (id, firstName, lastName, email, password, accountType, sex, state, town, dob)"
+                    + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             
             PreparedStatement prepStatement = connection.prepareStatement(queryString);
             prepStatement.setNull(1, Types.NULL);
@@ -127,7 +127,7 @@ public class DBInterface {
             prepStatement.setInt(8, state);
             prepStatement.setString(9, town);
             prepStatement.setString(10, dob);
-            prepStatement.setString(11, "NOW");
+//            prepStatement.setString(11, "NOW");
             
             prepStatement.execute();
             
@@ -268,7 +268,37 @@ public class DBInterface {
             
             return resultArray;
             
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return null;
+    }
+     
+    //get user ID?
+    public String getUserName(String email) {
+        String Name = "Not Set";
+        try {
+            String queryString = "SELECT firstName FROM user"
+                    + " WHERE email = " + email;
+            
+            Statement st = connection.createStatement();
+            
+            ResultSet rs = st.executeQuery(queryString);
+            
+            if(rs.next())
+            {
+                Name = rs.getString("firstName");
+                return Name;
+            }
+            
+//            PreparedStatement prepStatement = connection.prepareStatement(queryString);
+//            prepStatement.setString(1, email);
+            
+//            result = prepStatement.executeQuery();
+            
+//            return Name;
+            
+        } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
         return null;
