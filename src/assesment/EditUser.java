@@ -17,7 +17,6 @@ public class EditUser extends javax.swing.JFrame {
      */
     public EditUser() {
         initComponents();
-        cbxpnlUserSelect.setVisible(false);
     }
 
     /**
@@ -63,6 +62,8 @@ public class EditUser extends javax.swing.JFrame {
         cbxUserSelect = new javax.swing.JComboBox();
         pwdPassword = new javax.swing.JPasswordField();
         pwdConfirmPassword = new javax.swing.JPasswordField();
+        lblAccountType = new javax.swing.JLabel();
+        cbxAccountType = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -82,7 +83,7 @@ public class EditUser extends javax.swing.JFrame {
         cbxState.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select your state", "Queensland", "New South Wales", "Australian Capital Territory", "Victoria", "Tasmania", "South Australia", "Western Australia", "Northern Territory" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 17;
+        gridBagConstraints.gridy = 19;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
         pnlEditUser.add(cbxState, gridBagConstraints);
 
@@ -92,7 +93,7 @@ public class EditUser extends javax.swing.JFrame {
         txtTown.setPreferredSize(new java.awt.Dimension(170, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 19;
+        gridBagConstraints.gridy = 21;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
         pnlEditUser.add(txtTown, gridBagConstraints);
 
@@ -100,7 +101,7 @@ public class EditUser extends javax.swing.JFrame {
         lblEmail.setText("Email");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 8;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
         pnlEditUser.add(lblEmail, gridBagConstraints);
 
@@ -111,7 +112,7 @@ public class EditUser extends javax.swing.JFrame {
         txtEmail.setPreferredSize(new java.awt.Dimension(170, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
         pnlEditUser.add(txtEmail, gridBagConstraints);
 
@@ -119,7 +120,7 @@ public class EditUser extends javax.swing.JFrame {
         lblTown.setText("Town");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 18;
+        gridBagConstraints.gridy = 20;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
         pnlEditUser.add(lblTown, gridBagConstraints);
 
@@ -129,7 +130,7 @@ public class EditUser extends javax.swing.JFrame {
         txtFirstName.setPreferredSize(new java.awt.Dimension(170, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
         pnlEditUser.add(txtFirstName, gridBagConstraints);
 
@@ -137,7 +138,7 @@ public class EditUser extends javax.swing.JFrame {
         lblState.setText("State");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 16;
+        gridBagConstraints.gridy = 18;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
         pnlEditUser.add(lblState, gridBagConstraints);
 
@@ -145,7 +146,7 @@ public class EditUser extends javax.swing.JFrame {
         lblFirstName.setText("First Name");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
         pnlEditUser.add(lblFirstName, gridBagConstraints);
 
@@ -155,7 +156,7 @@ public class EditUser extends javax.swing.JFrame {
         txtSurname.setPreferredSize(new java.awt.Dimension(170, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
         pnlEditUser.add(txtSurname, gridBagConstraints);
 
@@ -163,7 +164,7 @@ public class EditUser extends javax.swing.JFrame {
         lblDateOfBirth.setText("Date of Birth");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 20;
+        gridBagConstraints.gridy = 22;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
         pnlEditUser.add(lblDateOfBirth, gridBagConstraints);
 
@@ -171,7 +172,7 @@ public class EditUser extends javax.swing.JFrame {
         lblSurname.setText("Surname");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
         pnlEditUser.add(lblSurname, gridBagConstraints);
 
@@ -179,7 +180,7 @@ public class EditUser extends javax.swing.JFrame {
         lblSex.setText("Sex");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 12;
+        gridBagConstraints.gridy = 14;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
         pnlEditUser.add(lblSex, gridBagConstraints);
 
@@ -211,7 +212,7 @@ public class EditUser extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 13;
+        gridBagConstraints.gridy = 15;
         gridBagConstraints.gridheight = 3;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
         pnlEditUser.add(btnpnlSex, gridBagConstraints);
@@ -241,7 +242,7 @@ public class EditUser extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 21;
+        gridBagConstraints.gridy = 23;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
         pnlEditUser.add(cbxpnlDateOfBirth, gridBagConstraints);
@@ -285,7 +286,7 @@ public class EditUser extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 22;
+        gridBagConstraints.gridy = 24;
         gridBagConstraints.insets = new java.awt.Insets(30, 0, 0, 0);
         pnlEditUser.add(btnpnlPageControls, gridBagConstraints);
 
@@ -293,7 +294,7 @@ public class EditUser extends javax.swing.JFrame {
         lblPassword.setText("Password");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
         pnlEditUser.add(lblPassword, gridBagConstraints);
 
@@ -301,7 +302,7 @@ public class EditUser extends javax.swing.JFrame {
         lblPasswordConfirm.setText("Confirm Password");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridy = 12;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
         pnlEditUser.add(lblPasswordConfirm, gridBagConstraints);
 
@@ -325,7 +326,7 @@ public class EditUser extends javax.swing.JFrame {
         pwdPassword.setPreferredSize(new java.awt.Dimension(170, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = 11;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
         pnlEditUser.add(pwdPassword, gridBagConstraints);
 
@@ -335,9 +336,24 @@ public class EditUser extends javax.swing.JFrame {
         pwdConfirmPassword.setPreferredSize(new java.awt.Dimension(170, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridy = 13;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
         pnlEditUser.add(pwdConfirmPassword, gridBagConstraints);
+
+        lblAccountType.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblAccountType.setText("Account Type");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
+        pnlEditUser.add(lblAccountType, gridBagConstraints);
+
+        cbxAccountType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Standard User", "Administrator" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
+        pnlEditUser.add(cbxAccountType, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -394,6 +410,7 @@ public class EditUser extends javax.swing.JFrame {
     private javax.swing.ButtonGroup btngrpSex;
     private javax.swing.JPanel btnpnlPageControls;
     private javax.swing.JPanel btnpnlSex;
+    private javax.swing.JComboBox cbxAccountType;
     private javax.swing.JComboBox cbxDay;
     private javax.swing.JComboBox cbxMonth;
     private javax.swing.JComboBox cbxState;
@@ -401,6 +418,7 @@ public class EditUser extends javax.swing.JFrame {
     private javax.swing.JComboBox cbxYear;
     private javax.swing.JPanel cbxpnlDateOfBirth;
     private javax.swing.JPanel cbxpnlUserSelect;
+    private javax.swing.JLabel lblAccountType;
     private javax.swing.JLabel lblDateOfBirth;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblFirstName;
