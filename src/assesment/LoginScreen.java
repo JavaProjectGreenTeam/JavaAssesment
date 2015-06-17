@@ -16,6 +16,7 @@ public class LoginScreen extends javax.swing.JFrame {
 
     RegistrationForm myReg;
     FormMain myForm;
+    DBInterface db;
 
     /**
      * Creates new form LoginScreen
@@ -40,10 +41,10 @@ public class LoginScreen extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        txtPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -74,14 +75,14 @@ public class LoginScreen extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         jPanel1.add(jLabel5, gridBagConstraints);
 
-        jTextField1.setPreferredSize(new java.awt.Dimension(170, 27));
+        txtEmail.setPreferredSize(new java.awt.Dimension(170, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        jPanel1.add(jTextField1, gridBagConstraints);
+        jPanel1.add(txtEmail, gridBagConstraints);
 
         jButton4.setText("Create Account");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -105,13 +106,13 @@ public class LoginScreen extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
         jPanel1.add(jLabel1, gridBagConstraints);
 
-        jPasswordField1.setPreferredSize(new java.awt.Dimension(170, 27));
+        txtPassword.setPreferredSize(new java.awt.Dimension(170, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        jPanel1.add(jPasswordField1, gridBagConstraints);
+        jPanel1.add(txtPassword, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
@@ -128,37 +129,24 @@ public class LoginScreen extends javax.swing.JFrame {
         myReg.setVisible(true);
 
         this.setVisible(false);
+
+
     }//GEN-LAST:event_jButton4ActionPerformed
 // login button action performed
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        String sql = "Select * from user";
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/findmycareer", "root", "");
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            String user = jTextField1.getText();
-            String pwd = new String(jPasswordField1.getPassword());
-            while (rs.next()) {
-                String email = rs.getString("email");
-                // username in the database
-                String password = rs.getString("password");
-                if ((user.equals(email)) && (pwd.equals(password))) {
-                    JOptionPane.showMessageDialog(this,"Login Success", "login", JOptionPane.YES_OPTION);
-                if(myForm == null) {
-                myForm = new FormMain();    
-                }
-                myForm.setVisible(true);
-                this.setVisible(false);
-                }
-                
-//       this.setVisible(false);
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+        if (myForm == null) {
+            myForm = new FormMain();
+            String email;
+            email = db.getUserName(txtEmail.getText());
+            myForm.lbUserID.setText(email);
         }
+        myForm.setVisible(true);
+
+        this.setVisible(false);
+      //user id information
+
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
@@ -203,7 +191,7 @@ public class LoginScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JPasswordField txtPassword;
     // End of variables declaration//GEN-END:variables
 }

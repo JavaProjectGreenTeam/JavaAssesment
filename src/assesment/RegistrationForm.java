@@ -1,15 +1,19 @@
 /*
  * Author: Ryan Gallagher
  */
-
 package assesment;
 
 public class RegistrationForm extends javax.swing.JFrame {
+
+    DBInterface db = new DBInterface();
+
+    Accountcreation myaccCreat;
 
     /**
      * Creates new form registrationForm
      */
     public RegistrationForm() {
+
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -53,8 +57,8 @@ public class RegistrationForm extends javax.swing.JFrame {
         btnExit = new javax.swing.JButton();
         lblPassword = new javax.swing.JLabel();
         lblPasswordConfirm = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jPasswordField2 = new javax.swing.JPasswordField();
+        txtPassword = new javax.swing.JPasswordField();
+        txtConfirm = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -119,6 +123,11 @@ public class RegistrationForm extends javax.swing.JFrame {
         txtFirstName.setMaximumSize(new java.awt.Dimension(2147483647, 27));
         txtFirstName.setMinimumSize(new java.awt.Dimension(170, 27));
         txtFirstName.setPreferredSize(new java.awt.Dimension(170, 27));
+        txtFirstName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFirstNameActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -224,7 +233,7 @@ public class RegistrationForm extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
         cbxpnlDateOfBirth.add(cbxMonth, gridBagConstraints);
 
-        cbxYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Year", "Item 2", "Item 3", "Item 4" }));
+        cbxYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Year", "1990", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -254,6 +263,11 @@ public class RegistrationForm extends javax.swing.JFrame {
         btnSubmit.setMaximumSize(new java.awt.Dimension(80, 28));
         btnSubmit.setMinimumSize(new java.awt.Dimension(80, 28));
         btnSubmit.setPreferredSize(new java.awt.Dimension(80, 28));
+        btnSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubmitActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -297,25 +311,25 @@ public class RegistrationForm extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
         pnlRegistrationForm.add(lblPasswordConfirm, gridBagConstraints);
 
-        jPasswordField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPasswordField1.setMaximumSize(new java.awt.Dimension(170, 27));
-        jPasswordField1.setMinimumSize(new java.awt.Dimension(170, 27));
-        jPasswordField1.setPreferredSize(new java.awt.Dimension(170, 27));
+        txtPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtPassword.setMaximumSize(new java.awt.Dimension(170, 27));
+        txtPassword.setMinimumSize(new java.awt.Dimension(170, 27));
+        txtPassword.setPreferredSize(new java.awt.Dimension(170, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 8;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
-        pnlRegistrationForm.add(jPasswordField1, gridBagConstraints);
+        pnlRegistrationForm.add(txtPassword, gridBagConstraints);
 
-        jPasswordField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPasswordField2.setMaximumSize(new java.awt.Dimension(170, 27));
-        jPasswordField2.setMinimumSize(new java.awt.Dimension(170, 27));
-        jPasswordField2.setPreferredSize(new java.awt.Dimension(170, 27));
+        txtConfirm.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtConfirm.setMaximumSize(new java.awt.Dimension(170, 27));
+        txtConfirm.setMinimumSize(new java.awt.Dimension(170, 27));
+        txtConfirm.setPreferredSize(new java.awt.Dimension(170, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 10;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
-        pnlRegistrationForm.add(jPasswordField2, gridBagConstraints);
+        pnlRegistrationForm.add(txtConfirm, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -331,6 +345,44 @@ public class RegistrationForm extends javax.swing.JFrame {
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+        // TODO add your handling code here:
+      //add new user
+        String fName = txtFirstName.getText();
+        String lName = txtSurname.getText();
+        String email = txtEmail.getText();
+        String password = txtPassword.getText();
+
+        int sex;
+        if (radbtnMale.isSelected()) {
+            sex = 0;
+        } else if (radbtnFemale.isSelected()) {
+            sex = 1;
+        } else {
+            sex = 2;
+        }
+        String states = cbxState.getSelectedItem().toString();
+        String town = txtTown.getText();
+        String day = cbxDay.getSelectedItem().toString();
+        String month = cbxMonth.getSelectedItem().toString();
+        String year = cbxYear.getSelectedItem().toString();
+        String Dob = (year + "" + month + "" + day);
+
+        db.createUser(fName, lName, email, password, WIDTH, sex, WIDTH, town, Dob);
+          // links back to login screen
+        if (myaccCreat == null) {
+            myaccCreat = new Accountcreation();
+        }
+        myaccCreat.setVisible(true);
+
+        this.setVisible(false);
+    }//GEN-LAST:event_btnSubmitActionPerformed
+
+    private void txtFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFirstNameActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txtFirstNameActionPerformed
 
     /**
      * @param args the command line arguments
@@ -379,8 +431,6 @@ public class RegistrationForm extends javax.swing.JFrame {
     private javax.swing.JComboBox cbxState;
     private javax.swing.JComboBox cbxYear;
     private javax.swing.JPanel cbxpnlDateOfBirth;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JLabel lblDateOfBirth;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblFirstName;
@@ -395,8 +445,10 @@ public class RegistrationForm extends javax.swing.JFrame {
     private javax.swing.JRadioButton radbtnFemale;
     private javax.swing.JRadioButton radbtnMale;
     private javax.swing.JRadioButton radbtnOther;
+    private javax.swing.JPasswordField txtConfirm;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtFirstName;
+    private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtSurname;
     private javax.swing.JTextField txtTown;
     // End of variables declaration//GEN-END:variables

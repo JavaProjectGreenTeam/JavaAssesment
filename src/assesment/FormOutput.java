@@ -12,6 +12,7 @@ package assesment;
  */
 public class FormOutput extends javax.swing.JFrame {
 
+    FormMain myMain;
     /**
      * Creates new form FormOutput
      */
@@ -80,6 +81,11 @@ public class FormOutput extends javax.swing.JFrame {
         getContentPane().add(jPanel1, gridBagConstraints);
 
         btnReturn.setText("Return To Main Page");
+        btnReturn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReturnActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -89,6 +95,16 @@ public class FormOutput extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
+        // TODO add your handling code here:
+        if (myMain == null) {
+            myMain = new FormMain();
+            
+        }
+        myMain.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnReturnActionPerformed
 
     /**
      * @param args the command line arguments
