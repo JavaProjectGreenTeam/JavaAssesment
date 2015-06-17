@@ -1,9 +1,9 @@
+/*
+ * Author: Ryan Gallagher
+ */
+
 package assesment;
 
-/**
- *
- * @author Nick
- */
 public class User {
     private int userId;
     private String firstName;
