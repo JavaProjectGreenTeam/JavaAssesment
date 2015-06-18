@@ -11,7 +11,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+//DBinterface done by Nick
 /**
  *
  * @author 3100298414
