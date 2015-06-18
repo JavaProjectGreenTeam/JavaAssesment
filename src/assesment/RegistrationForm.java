@@ -5,7 +5,6 @@ package assesment;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.swing.DefaultComboBoxModel;
 
 public class RegistrationForm extends javax.swing.JFrame {
