@@ -3,6 +3,8 @@
  */
 package assesment;
 
+import java.sql.Date;
+
 public class RegistrationForm extends javax.swing.JFrame {
 
     DBInterface db = new DBInterface();
@@ -364,12 +366,16 @@ public class RegistrationForm extends javax.swing.JFrame {
         }
         String states = cbxState.getSelectedItem().toString();
         String town = txtTown.getText();
-        String day = cbxDay.getSelectedItem().toString();
-        String month = cbxMonth.getSelectedItem().toString();
-        String year = cbxYear.getSelectedItem().toString();
-        String Dob = (year + "" + month + "" + day);
+        int day = Integer.parseInt(cbxDay.getSelectedItem().toString());
+        //int month = Integer.parseInt(cbxMonth.getSelectedItem().toString());
+        int year = Integer.parseInt(cbxYear.getSelectedItem().toString());
+        System.out.println(cbxYear.getSelectedItem().toString());
+        System.out.println(Integer.parseInt(cbxYear.getSelectedItem().toString()));
+        
+        String dobString = String.format("%d-%02d-%02d", year, 1, day);
+        Date dob = Date.valueOf(dobString);
 
-        db.createUser(fName, lName, email, password, WIDTH, sex, WIDTH, town, Dob);
+        db.createUser(fName, lName, email, password, 1, sex, 1, town, dob);
           // links back to login screen
         if (myaccCreat == null) {
             myaccCreat = new Accountcreation();

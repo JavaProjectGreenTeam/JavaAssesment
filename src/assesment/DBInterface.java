@@ -1,6 +1,7 @@
 package assesment;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -110,11 +111,11 @@ public class DBInterface {
     
     
         //Create a new User entry
-    boolean createUser(String firstName, String lastName, String email, String password, int accountType, int sex, int state, String town, String dob) {
+    boolean createUser(String firstName, String lastName, String email, String password, int accountType, int sex, int state, String town, Date dob) {
         try {
             String queryString = "INSERT INTO user"
-                    + " (id, firstName, lastName, email, password, accountType, sex, state, town, dob)"
-                    + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    + " (id, firstName, lastName, email, password, accountType, sex, state, town, dob, lastLogin)"
+                    + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
             
             PreparedStatement prepStatement = connection.prepareStatement(queryString);
             prepStatement.setNull(1, Types.NULL);
@@ -126,8 +127,7 @@ public class DBInterface {
             prepStatement.setInt(7, sex);
             prepStatement.setInt(8, state);
             prepStatement.setString(9, town);
-            prepStatement.setString(10, dob);
-//            prepStatement.setString(11, "NOW");
+            prepStatement.setDate(10, dob);
             
             prepStatement.execute();
             
