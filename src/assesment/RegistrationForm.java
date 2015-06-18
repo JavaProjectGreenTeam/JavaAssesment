@@ -5,6 +5,7 @@ package assesment;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.DefaultComboBoxModel;
 
 public class RegistrationForm extends javax.swing.JFrame {
@@ -14,6 +15,8 @@ public class RegistrationForm extends javax.swing.JFrame {
     Accountcreation myaccCreat;
     
     ArrayList<String> stateArray = new ArrayList<>();
+    ArrayList<String> monthArray = new ArrayList<>();
+    ArrayList<String> dayArray = new ArrayList<>();
 
     /**
      * Creates new form registrationForm
@@ -23,12 +26,23 @@ public class RegistrationForm extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
         stateArray.add("Select your state");
-        for (int i = 0; i > 6; i++) {
-            System.out.println("Running loop");
-            System.out.println(i + ": " + State.getById(i));
+        for (int i = 0; i <= 6; i++) {
             stateArray.add(State.getById(i));
         }
         cbxState.setModel(new DefaultComboBoxModel(stateArray.toArray()));
+        
+        //Set the default selectedMonth for days
+        dayArray.add("Day");
+        for (int i = 1; i <= 31; i++) {
+            dayArray.add(Integer.toString(i));
+        }
+        cbxDay.setModel(new DefaultComboBoxModel(dayArray.toArray()));
+        
+        monthArray.add("Month");
+        for (int i = 1; i <= 12; i++) {
+            monthArray.add(Month.getById(i));
+        }
+        cbxMonth.setModel(new DefaultComboBoxModel(monthArray.toArray()));
     }
 
     /**
@@ -231,14 +245,17 @@ public class RegistrationForm extends javax.swing.JFrame {
 
         cbxpnlDateOfBirth.setLayout(new java.awt.GridBagLayout());
 
-        cbxDay.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
         cbxpnlDateOfBirth.add(cbxDay, gridBagConstraints);
 
-        cbxMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
+        cbxMonth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxMonthActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -403,6 +420,44 @@ public class RegistrationForm extends javax.swing.JFrame {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_txtFirstNameActionPerformed
+
+    private void cbxMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxMonthActionPerformed
+        int days;
+        
+        int selectedDay = cbxDay.getSelectedIndex();
+        int selectedMonth = cbxMonth.getSelectedIndex();
+        int selectedYear = Integer.parseInt(cbxYear.getSelectedItem().toString());
+        
+        if (selectedMonth != 0) {
+            if (selectedMonth == 1 || selectedMonth == 3 || selectedMonth == 5 || selectedMonth == 7 || selectedMonth == 8 || selectedMonth == 10 || selectedMonth == 12) {
+                days = 31;
+                
+            } else if (selectedMonth == 4 || selectedMonth == 6 || selectedMonth == 9 || selectedMonth == 11) {
+                days = 32;
+                
+            } else if (selectedMonth == 2) {
+                if ((selectedYear % 4 == 0) && (selectedYear % 100 != 0) || (selectedYear % 400 == 0)) {
+                    days = 29;
+                    
+                } else {
+                    days = 28;
+                }
+            } else {
+                days = 0;
+            }
+            
+            if (days != 0) {
+                dayArray.clear();
+                for (int i = 1; i <= days; i++) {
+                    dayArray.add(Integer.toString(i));
+                }
+            }
+            
+            if (selectedDay != 0 && ((selectedDay) <= Integer.parseInt(dayArray.get(dayArray.size() - 1)))) {
+                cbxDay.setSelectedIndex(selectedDay + 1);
+            }
+        }
+    }//GEN-LAST:event_cbxMonthActionPerformed
 
     /**
      * @param args the command line arguments
