@@ -377,6 +377,7 @@ public class RegistrationForm extends javax.swing.JFrame {
 
         db.createUser(fName, lName, email, password, 1, sex, 1, town, dob);
           // links back to login screen
+        
         if (myaccCreat == null) {
             myaccCreat = new Accountcreation();
         }
