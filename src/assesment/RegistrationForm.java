@@ -4,20 +4,31 @@
 package assesment;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 
 public class RegistrationForm extends javax.swing.JFrame {
 
-    DBInterface db = new DBInterface();
+    UserHandler handler = new UserHandler();
 
     Accountcreation myaccCreat;
+    
+    ArrayList<String> stateArray = new ArrayList<>();
 
     /**
      * Creates new form registrationForm
      */
     public RegistrationForm() {
-
         initComponents();
         this.setLocationRelativeTo(null);
+        
+        stateArray.add("Select your state");
+        for (int i = 0; i > 6; i++) {
+            System.out.println("Running loop");
+            System.out.println(i + ": " + State.getById(i));
+            stateArray.add(State.getById(i));
+        }
+        cbxState.setModel(new DefaultComboBoxModel(stateArray.toArray()));
     }
 
     /**
@@ -77,7 +88,6 @@ public class RegistrationForm extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
         pnlRegistrationForm.add(lblTitle, gridBagConstraints);
 
-        cbxState.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select your state", "Queensland", "New South Wales", "Australian Capital Territory", "Victoria", "Tasmania", "South Australia", "Western Australia", "Northern Territory" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 16;
@@ -375,15 +385,18 @@ public class RegistrationForm extends javax.swing.JFrame {
         String dobString = String.format("%d-%02d-%02d", year, 1, day);
         Date dob = Date.valueOf(dobString);
 
-        db.createUser(fName, lName, email, password, 1, sex, 1, town, dob);
-          // links back to login screen
+        User user = new User(0 ,fName, lName, email, password, 0, sex, 1, town, dob);
+        boolean success = handler.register(user);
         
-        if (myaccCreat == null) {
+        if (success) {
+            // links back to login screen
+            if (myaccCreat == null) {
             myaccCreat = new Accountcreation();
-        }
-        myaccCreat.setVisible(true);
+            }
+            myaccCreat.setVisible(true);
 
-        this.setVisible(false);
+            this.setVisible(false);
+        }    
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void txtFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFirstNameActionPerformed
