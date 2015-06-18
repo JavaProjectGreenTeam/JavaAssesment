@@ -4,6 +4,8 @@
 
 package assesment;
 
+import java.sql.Date;
+
 public class User {
     private int userId;
     private String firstName;
@@ -14,9 +16,9 @@ public class User {
     private int sex;
     private int state;
     private String town;
-    private String dob;
+    private Date dob;
 
-    User(int userId, String firstName, String lastName, String email, String password, int accountType, int sex, int state, String town, String dob) {
+    User(int userId, String firstName, String lastName, String email, String password, int accountType, int sex, int state, String town, Date dob) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -137,14 +139,14 @@ public class User {
     /**
      * @return the dob
      */
-    public String getDob() {
+    public Date getDob() {
         return dob;
     }
 
     /**
      * @param dob the dob to set
      */
-    public void setDob(String dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 
