@@ -26,7 +26,7 @@ public class UserHandler {
         int sex = user.getSex();
         int state = user.getState();
         String town = user.getTown();
-        String dob = user.getDob();
+        Date dob = user.getDob();
         success = db.createUser(firstName, lastName, email, password, accountType, sex, state, town, dob); 
         
         return success;
