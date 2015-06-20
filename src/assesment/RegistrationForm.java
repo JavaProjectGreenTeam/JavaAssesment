@@ -7,6 +7,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 public class RegistrationForm extends javax.swing.JFrame {
 
@@ -24,6 +26,8 @@ public class RegistrationForm extends javax.swing.JFrame {
     public RegistrationForm() {
         initComponents();
         this.setLocationRelativeTo(null);
+        
+        System.out.println(btngrpSex.getSelection());
         
         stateArray.add("Select your state");
         for (int i = 0; i <= 7; i++) {
@@ -380,14 +384,21 @@ public class RegistrationForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-        // TODO add your handling code here:
-      //add new user
+        
+        
+        int sex;
+
+        //Get variables from form elements
         String fName = txtFirstName.getText();
         String lName = txtSurname.getText();
         String email = txtEmail.getText();
         String password = txtPassword.getText();
-
-        int sex;
+        int state = cbxState.getSelectedIndex();
+        String town = txtTown.getText();
+        int day = Integer.parseInt(cbxDay.getSelectedItem().toString());
+        int month = cbxMonth.getSelectedIndex();
+        int year = Integer.parseInt(cbxYear.getSelectedItem().toString());
+        
         if (radbtnMale.isSelected()) {
             sex = 0;
         } else if (radbtnFemale.isSelected()) {
@@ -395,13 +406,6 @@ public class RegistrationForm extends javax.swing.JFrame {
         } else {
             sex = 2;
         }
-        
-        //Get variables from form elements
-        int state = cbxState.getSelectedIndex();
-        String town = txtTown.getText();
-        int day = Integer.parseInt(cbxDay.getSelectedItem().toString());
-        int month = cbxMonth.getSelectedIndex();
-        int year = Integer.parseInt(cbxYear.getSelectedItem().toString());
         
         //Create date value from individial day, month, year variables
         String dobString = String.format("%d-%02d-%02d", year, month, day);
@@ -434,6 +438,36 @@ public class RegistrationForm extends javax.swing.JFrame {
         calcDays();
     }//GEN-LAST:event_cbxYearActionPerformed
 
+    private boolean checkFields() {
+        int errorTrigger;
+        boolean triggered;
+        String error;
+        
+        JTextField[] textFieldArray = new JTextField[] {txtFirstName, txtSurname, txtEmail, txtTown};
+        JPasswordField[] passwordFieldArray = new JPasswordField[] {txtPassword, txtConfirm};
+        
+        triggered = false;
+        
+        for (int i = 0; i < textFieldArray.length; i++) {
+            if (textFieldArray[i].getText().equals("") && !triggered) {
+                errorTrigger = i;
+                triggered = true;
+            }
+        }
+        
+        if (!triggered) {
+            for (int i = 0; i < passwordFieldArray.length; i++) {
+                if (passwordFieldArray[i].getText().equals("") && !triggered) {
+                    errorTrigger = i + textFieldArray.length;
+                    triggered = true;
+                }
+            }
+        }
+        //btngrpSex.getSelection();
+        
+        return false;
+    }
+    
     private void calcDays() {
         int days;
         int selectedYear = 0;
