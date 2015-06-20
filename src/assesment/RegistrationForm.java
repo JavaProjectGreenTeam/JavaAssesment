@@ -27,8 +27,6 @@ public class RegistrationForm extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         
-        System.out.println(btngrpSex.getSelection());
-        
         stateArray.add("Select your state");
         for (int i = 0; i <= 7; i++) {
             stateArray.add(State.getById(i));
@@ -448,7 +446,7 @@ public class RegistrationForm extends javax.swing.JFrame {
         
         triggered = false;
         
-        for (int i = 0; i < textFieldArray.length; i++) {
+        for (int i = 0; i < textFieldArray.length - 1; i++) {
             if (textFieldArray[i].getText().equals("") && !triggered) {
                 errorTrigger = i;
                 triggered = true;
@@ -456,14 +454,15 @@ public class RegistrationForm extends javax.swing.JFrame {
         }
         
         if (!triggered) {
-            for (int i = 0; i < passwordFieldArray.length; i++) {
+            for (int i = 0; i < passwordFieldArray.length - 1; i++) {
                 if (passwordFieldArray[i].getText().equals("") && !triggered) {
                     errorTrigger = i + textFieldArray.length;
                     triggered = true;
                 }
             }
         }
-        //btngrpSex.getSelection();
+        
+        
         
         return false;
     }
