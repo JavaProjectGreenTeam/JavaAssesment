@@ -31,6 +31,18 @@ public class User {
         this.dob = dob;
     }
     
+    User(String firstName, String lastName, String email, String password, int accountType, int sex, int state, String town, Date dob) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.accountType = accountType;
+        this.sex = sex;
+        this.state = state;
+        this.town = town;
+        this.dob = dob;
+    }
+    
     public boolean isAdmin() {
         if (this.accountType == 1) {
             return true;

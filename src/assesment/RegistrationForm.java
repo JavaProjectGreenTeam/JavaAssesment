@@ -4,28 +4,61 @@
 package assesment;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 public class RegistrationForm extends javax.swing.JFrame {
 
-    DBInterface db = new DBInterface();
-
+    UserHandler handler;
+    Validator validator;
     Accountcreation myaccCreat;
+    
+    ArrayList<String> stateArray = new ArrayList<>();
+    ArrayList<String> monthArray = new ArrayList<>();
+    ArrayList<String> dayArray = new ArrayList<>();
 
     /**
      * Creates new form registrationForm
      */
     public RegistrationForm() {
-
         initComponents();
         this.setLocationRelativeTo(null);
-       // calendar for loop done by Joe and Ryan 
+        
+        handler = new UserHandler();
+        validator = new Validator();
+        
+        //Populate the state dropdown from State enum
+        stateArray.add("Select your state");
+        for (int i = 0; i <= 7; i++) {
+            stateArray.add(State.getById(i));
+        }
+        setCbx(cbxState, stateArray);
+        
+        //Populate the default day dropdown
+        dayArray.add("Day");
+        for (int i = 1; i <= 31; i++) {
+            dayArray.add(Integer.toString(i));
+        }
+        setCbx(cbxDay, dayArray);
+        
+        //Populate the month dropdown from Month enum
+        monthArray.add("Month");
+        for (int i = 1; i <= 12; i++) {
+            monthArray.add(Month.getById(i));
+        }
+        setCbx(cbxMonth, monthArray);
+   
+        // calendar for loop done by Joe and Ryan 
         cbxYear.removeAllItems();
         int year = Calendar.getInstance().get(Calendar.YEAR);
         
         for(int i = 1900; i<= year; i++){
             cbxYear.addItem(i);
-    }
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -84,7 +117,6 @@ public class RegistrationForm extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
         pnlRegistrationForm.add(lblTitle, gridBagConstraints);
 
-        cbxState.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select your state", "Queensland", "New South Wales", "Australian Capital Territory", "Victoria", "Tasmania", "South Australia", "Western Australia", "Northern Territory" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 16;
@@ -110,7 +142,6 @@ public class RegistrationForm extends javax.swing.JFrame {
         pnlRegistrationForm.add(lblEmail, gridBagConstraints);
 
         txtEmail.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtEmail.setText("someone@example.com");
         txtEmail.setMaximumSize(new java.awt.Dimension(2147483647, 27));
         txtEmail.setMinimumSize(new java.awt.Dimension(170, 27));
         txtEmail.setPreferredSize(new java.awt.Dimension(170, 27));
@@ -228,14 +259,17 @@ public class RegistrationForm extends javax.swing.JFrame {
 
         cbxpnlDateOfBirth.setLayout(new java.awt.GridBagLayout());
 
-        cbxDay.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
         cbxpnlDateOfBirth.add(cbxDay, gridBagConstraints);
 
-        cbxMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
+        cbxMonth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxMonthActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -243,6 +277,11 @@ public class RegistrationForm extends javax.swing.JFrame {
         cbxpnlDateOfBirth.add(cbxMonth, gridBagConstraints);
 
         cbxYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Year", "1990", "Item 3", "Item 4" }));
+        cbxYear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxYearActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -356,41 +395,46 @@ public class RegistrationForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-        // TODO add your handling code here:
-      //add new user done joe and Nick
-        String fName = txtFirstName.getText();
-        String lName = txtSurname.getText();
-        String email = txtEmail.getText();
-        String password = txtPassword.getText();
+    boolean checkSuccess = checkFields();
+        if (checkSuccess) {
+            int sex;
 
-        int sex;
-        if (radbtnMale.isSelected()) {
-            sex = 0;
-        } else if (radbtnFemale.isSelected()) {
-            sex = 1;
-        } else {
-            sex = 2;
+            //Get variables from form elements
+            String fName = txtFirstName.getText();
+            String lName = txtSurname.getText();
+            String email = txtEmail.getText();
+            String password = txtPassword.getText();
+            int state = cbxState.getSelectedIndex();
+            String town = txtTown.getText();
+            int day = Integer.parseInt(cbxDay.getSelectedItem().toString());
+            int month = cbxMonth.getSelectedIndex();
+            int year = Integer.parseInt(cbxYear.getSelectedItem().toString());
+
+            if (radbtnMale.isSelected()) {
+                sex = 0;
+            } else if (radbtnFemale.isSelected()) {
+                sex = 1;
+            } else {
+                sex = 2;
+            }
+
+            //Create date value from individial day, month, year variables
+            String dobString = String.format("%d-%02d-%02d", year, month, day);
+            Date dob = Date.valueOf(dobString);
+
+            User user = new User(fName, lName, email, password, 0, sex, state, town, dob);
+            boolean success = handler.register(user);
+
+            if (success) {
+                // links back to login screen
+                if (myaccCreat == null) {
+                myaccCreat = new Accountcreation();
+                }
+                myaccCreat.setVisible(true);
+
+                this.setVisible(false);
+            }
         }
-        String states = cbxState.getSelectedItem().toString();
-        String town = txtTown.getText();
-        int day = Integer.parseInt(cbxDay.getSelectedItem().toString());
-        //int month = Integer.parseInt(cbxMonth.getSelectedItem().toString());
-        int year = Integer.parseInt(cbxYear.getSelectedItem().toString());
-        System.out.println(cbxYear.getSelectedItem().toString());
-        System.out.println(Integer.parseInt(cbxYear.getSelectedItem().toString()));
-        
-        String dobString = String.format("%d-%02d-%02d", year, 1, day);
-        Date dob = Date.valueOf(dobString);
-
-        db.createUser(fName, lName, email, password, 1, sex, 1, town, dob);
-          // links back to login screen
-        
-        if (myaccCreat == null) {
-            myaccCreat = new Accountcreation();
-        }
-        myaccCreat.setVisible(true);
-
-        this.setVisible(false);
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void txtFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFirstNameActionPerformed
@@ -398,6 +442,219 @@ public class RegistrationForm extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txtFirstNameActionPerformed
 
+    private void cbxMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxMonthActionPerformed
+        calcDays();
+    }//GEN-LAST:event_cbxMonthActionPerformed
+
+    private void cbxYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxYearActionPerformed
+        calcDays();
+    }//GEN-LAST:event_cbxYearActionPerformed
+
+    private boolean checkFields() {
+        boolean triggered;
+        String error;
+        
+        JTextField[] textFieldArray = new JTextField[] {null, txtFirstName, txtSurname, txtEmail, txtTown};
+        JPasswordField[] passwordFieldArray = new JPasswordField[] {null, txtPassword, txtConfirm};
+        JComboBox[] comboBoxArray = new JComboBox[] {null, cbxState, cbxDay, cbxMonth, cbxYear};
+        
+        int errorTrigger = 0;
+        int errorPoint = 0;
+        
+        triggered = false;
+        
+        //Check all text fields are filled
+        System.out.println("Checking text fields");
+        for (int i = 1; i < textFieldArray.length; i++) {
+            errorPoint++;
+            
+            if (textFieldArray[i].getText().equals("") && !triggered) {
+                errorTrigger = errorPoint;
+                triggered = true;
+            }
+        }
+        
+        //Check passwords are entered
+        if (!triggered) {
+            System.out.println("Checking password fields");
+            for (int i = 1; i < passwordFieldArray.length; i++) {
+                errorPoint++;
+                
+                if (passwordFieldArray[i].getText().equals("") && !triggered) {
+                    errorTrigger = errorPoint;
+                    triggered = true;
+                }
+            }
+        }
+        
+        //Check a sex is selected
+        if (!triggered) {
+            System.out.println("Checking sex selection");
+            errorPoint++;
+            
+            if (!radbtnMale.isSelected() && !radbtnFemale.isSelected() && !radbtnOther.isSelected()) {
+                errorTrigger = errorPoint;
+                triggered = true;
+            }
+        }
+        
+        //Check the combo box values are not the default
+        if (!triggered) {
+            System.out.println("Checking combo boxes");
+            for (int i = 1; i < comboBoxArray.length; i++) {
+                errorPoint++;
+                
+                if (comboBoxArray[i].getSelectedIndex() == 0 && !triggered) {
+                    errorTrigger = errorPoint;
+                    triggered = true;
+                }
+            }
+        }
+        
+        //Check that email is valid
+        if (!triggered) {
+            System.out.println("Checking email validation");
+            errorPoint++;
+            String email = txtEmail.getText();
+            
+            if (!validator.validateEmail(email)) {
+                errorTrigger = errorPoint;
+                triggered = true;
+            }
+        }
+        
+        //Check that the passwords match
+        if (!triggered) {
+            System.out.println("Checking passwords match");
+            errorPoint++;
+            String pass1 = txtPassword.getText();
+            String pass2 = txtConfirm.getText();
+            
+            if (!validator.matchPassword(pass1, pass2)) {
+                errorTrigger = errorPoint;
+                triggered = true;
+            }
+        }
+        
+        System.out.println("errorPoint = " + errorTrigger + "\n"
+        + "triggered = " + triggered);
+        
+        if (triggered) {
+            switch(errorTrigger) {
+                case 1:
+                    //First Name is required
+                    break;
+                    
+                case 2:
+                    //Surname is required
+                    break;
+                    
+                case 3:
+                    //Email is required
+                    break;
+                    
+                case 4:
+                    //Town is required
+                    break;
+                    
+                case 5:
+                    //Password is required
+                    break;
+                    
+                case 6:
+                    //Confirm Password is required
+                    break;
+                    
+                case 7:
+                    //Gender selection is required
+                    break;
+                    
+                case 8:
+                    //State is required
+                    break;
+                    
+                case 9:
+                    //Day is required
+                    break;
+                    
+                case 10:
+                    //Month is required
+                    break;
+                    
+                case 11:
+                    //Year is required
+                    break;
+                    
+                case 12:
+                    //Email isn't valid (must contain "@" and ".")
+                    break;
+                    
+                case 13:
+                    //Passwords don't match
+                    break;
+            }
+            
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private void calcDays() {
+        int days;
+        int selectedYear = 0;
+        
+        int dayIndex = cbxDay.getSelectedIndex();
+        int monthIndex = cbxMonth.getSelectedIndex();
+        int yearIndex = cbxYear.getSelectedIndex();
+        
+        
+        
+        if (yearIndex != 0) {
+            selectedYear = Integer.parseInt(cbxYear.getSelectedItem().toString());
+        }
+        
+        //Determine what month is selected and set number of days depending on that
+        if (monthIndex != 0) {
+            if (monthIndex == 1 || monthIndex == 3 || monthIndex == 5 || monthIndex == 7 || monthIndex == 8 || monthIndex == 10 || monthIndex == 12) {
+                days = 31;
+                
+            } else if (monthIndex == 4 || monthIndex == 6 || monthIndex == 9 || monthIndex == 11) {
+                days = 30;
+                
+            } else if (monthIndex == 2 && yearIndex != 0) {
+                //Check if year is leap year
+                if ((selectedYear % 4 == 0) && (selectedYear % 100 != 0) || (selectedYear % 400 == 0)) {
+                    days = 29;
+                    
+                } else {
+                    days = 28;
+                }
+            } else {
+                days = 0;
+            }
+            
+            //Construct the new values and set to days combo box
+            if (days != 0) {
+                dayArray.clear();
+                dayArray.add("Day");
+                for (int i = 1; i <= days; i++) {
+                    dayArray.add(Integer.toString(i));
+                }
+                setCbx(cbxDay, dayArray);
+            }
+            
+            //Set the selected day to the previous selected day
+            if (dayIndex != 0 && ((dayIndex) <= Integer.parseInt(dayArray.get(dayArray.size() - 1)))) {
+                cbxDay.setSelectedIndex(dayIndex);
+            }
+        }
+    }
+    
+    private void setCbx(JComboBox cbx, ArrayList<String> array) {
+        cbx.setModel(new DefaultComboBoxModel(array.toArray()));
+    }
+    
     /**
      * @param args the command line arguments
      */
