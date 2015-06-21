@@ -12,6 +12,7 @@ import java.sql.*;
  *
  * @author 5050630103
  */
+//login done by Joe
 public class LoginScreen extends javax.swing.JFrame {
 
     RegistrationForm myReg;
@@ -137,10 +138,7 @@ public class LoginScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (myForm == null) {
             myForm = new FormMain();
-            String email;
-            email = db.getUserName(txtEmail.getText());
-            myForm.lbUserID.setText(email);
-        }
+          }
         myForm.setVisible(true);
 
         this.setVisible(false);
