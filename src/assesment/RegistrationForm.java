@@ -55,7 +55,7 @@ public class RegistrationForm extends javax.swing.JFrame {
         // calendar for loop done by Joe and Ryan 
         cbxYear.removeAllItems();
         int year = Calendar.getInstance().get(Calendar.YEAR);
-        
+        cbxYear.addItem("Year");
         for(int i = 1900; i<= year; i++){
             cbxYear.addItem(i);
         }
@@ -276,7 +276,6 @@ public class RegistrationForm extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
         cbxpnlDateOfBirth.add(cbxMonth, gridBagConstraints);
 
-        cbxYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Year", "1990", "Item 3", "Item 4" }));
         cbxYear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxYearActionPerformed(evt);
