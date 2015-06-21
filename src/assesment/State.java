@@ -1,5 +1,5 @@
 /*
- * Author: Ryan Gallagher
+ * State.java was written by Ryan Gallagher
  */
 
 package assesment;
