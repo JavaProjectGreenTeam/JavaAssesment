@@ -12,8 +12,8 @@ import javax.swing.JTextField;
 
 public class RegistrationForm extends javax.swing.JFrame {
 
-    UserHandler handler = new UserHandler();
-
+    UserHandler handler;
+    Validator validator;
     Accountcreation myaccCreat;
     
     ArrayList<String> stateArray = new ArrayList<>();
@@ -27,19 +27,24 @@ public class RegistrationForm extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         
+        handler = new UserHandler();
+        validator = new Validator();
+        
+        //Populate the state dropdown from State enum
         stateArray.add("Select your state");
         for (int i = 0; i <= 7; i++) {
             stateArray.add(State.getById(i));
         }
         setCbx(cbxState, stateArray);
         
-        //Set the default month value for days
+        //Populate the default day dropdown
         dayArray.add("Day");
         for (int i = 1; i <= 31; i++) {
             dayArray.add(Integer.toString(i));
         }
         setCbx(cbxDay, dayArray);
         
+        //Populate the month dropdown from Month enum
         monthArray.add("Month");
         for (int i = 1; i <= 12; i++) {
             monthArray.add(Month.getById(i));
@@ -382,45 +387,47 @@ public class RegistrationForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+        boolean checkSuccess = checkFields();
         
-        
-        int sex;
+        if (checkSuccess) {
+            int sex;
 
-        //Get variables from form elements
-        String fName = txtFirstName.getText();
-        String lName = txtSurname.getText();
-        String email = txtEmail.getText();
-        String password = txtPassword.getText();
-        int state = cbxState.getSelectedIndex();
-        String town = txtTown.getText();
-        int day = Integer.parseInt(cbxDay.getSelectedItem().toString());
-        int month = cbxMonth.getSelectedIndex();
-        int year = Integer.parseInt(cbxYear.getSelectedItem().toString());
-        
-        if (radbtnMale.isSelected()) {
-            sex = 0;
-        } else if (radbtnFemale.isSelected()) {
-            sex = 1;
-        } else {
-            sex = 2;
-        }
-        
-        //Create date value from individial day, month, year variables
-        String dobString = String.format("%d-%02d-%02d", year, month, day);
-        Date dob = Date.valueOf(dobString);
+            //Get variables from form elements
+            String fName = txtFirstName.getText();
+            String lName = txtSurname.getText();
+            String email = txtEmail.getText();
+            String password = txtPassword.getText();
+            int state = cbxState.getSelectedIndex();
+            String town = txtTown.getText();
+            int day = Integer.parseInt(cbxDay.getSelectedItem().toString());
+            int month = cbxMonth.getSelectedIndex();
+            int year = Integer.parseInt(cbxYear.getSelectedItem().toString());
 
-        User user = new User(0 ,fName, lName, email, password, 0, sex, state, town, dob);
-        boolean success = handler.register(user);
-        
-        if (success) {
-            // links back to login screen
-            if (myaccCreat == null) {
-            myaccCreat = new Accountcreation();
+            if (radbtnMale.isSelected()) {
+                sex = 0;
+            } else if (radbtnFemale.isSelected()) {
+                sex = 1;
+            } else {
+                sex = 2;
             }
-            myaccCreat.setVisible(true);
 
-            this.setVisible(false);
-        }    
+            //Create date value from individial day, month, year variables
+            String dobString = String.format("%d-%02d-%02d", year, month, day);
+            Date dob = Date.valueOf(dobString);
+
+            User user = new User(fName, lName, email, password, 0, sex, state, town, dob);
+            boolean success = handler.register(user);
+
+            if (success) {
+                // links back to login screen
+                if (myaccCreat == null) {
+                myaccCreat = new Accountcreation();
+                }
+                myaccCreat.setVisible(true);
+
+                this.setVisible(false);
+            }
+        }
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void txtFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFirstNameActionPerformed
@@ -437,34 +444,99 @@ public class RegistrationForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cbxYearActionPerformed
 
     private boolean checkFields() {
-        int errorTrigger;
         boolean triggered;
         String error;
         
-        JTextField[] textFieldArray = new JTextField[] {txtFirstName, txtSurname, txtEmail, txtTown};
-        JPasswordField[] passwordFieldArray = new JPasswordField[] {txtPassword, txtConfirm};
+        JTextField[] textFieldArray = new JTextField[] {null, txtFirstName, txtSurname, txtEmail, txtTown};
+        JPasswordField[] passwordFieldArray = new JPasswordField[] {null, txtPassword, txtConfirm};
+        JComboBox[] comboBoxArray = new JComboBox[] {null, cbxState, cbxDay, cbxMonth, cbxYear};
+        
+        int errorTrigger = 0;
+        int errorPoint = 0;
         
         triggered = false;
         
-        for (int i = 0; i < textFieldArray.length - 1; i++) {
+        //Check all text fields are filled
+        System.out.println("Checking text fields");
+        for (int i = 1; i < textFieldArray.length; i++) {
+            errorPoint++;
+            
             if (textFieldArray[i].getText().equals("") && !triggered) {
-                errorTrigger = i;
+                errorTrigger = errorPoint;
                 triggered = true;
             }
         }
         
+        //Check passwords are entered
         if (!triggered) {
-            for (int i = 0; i < passwordFieldArray.length - 1; i++) {
+            System.out.println("Checking password fields");
+            for (int i = 1; i < passwordFieldArray.length; i++) {
+                errorPoint++;
+                
                 if (passwordFieldArray[i].getText().equals("") && !triggered) {
-                    errorTrigger = i + textFieldArray.length;
+                    errorTrigger = errorPoint;
                     triggered = true;
                 }
             }
         }
         
+        //Check a sex is selected
+        if (!triggered) {
+            System.out.println("Checking sex selection");
+            errorPoint++;
+            
+            if (!radbtnMale.isSelected() && !radbtnFemale.isSelected() && !radbtnOther.isSelected()) {
+                errorTrigger = errorPoint;
+                triggered = true;
+            }
+        }
         
+        //Check the combo box values are not the default
+        if (!triggered) {
+            System.out.println("Checking combo boxes");
+            for (int i = 1; i < comboBoxArray.length; i++) {
+                errorPoint++;
+                
+                if (comboBoxArray[i].getSelectedIndex() == 0 && !triggered) {
+                    errorTrigger = errorPoint;
+                    triggered = true;
+                }
+            }
+        }
         
-        return false;
+        //Check that email is valid
+        if (!triggered) {
+            System.out.println("Checking email validation");
+            errorPoint++;
+            String email = txtEmail.getText();
+            
+            if (!validator.validateEmail(email)) {
+                errorTrigger = errorPoint;
+                triggered = true;
+            }
+        }
+        
+        //Check that the passwords match
+        if (!triggered) {
+            System.out.println("Checking passwords match");
+            errorPoint++;
+            String pass1 = txtPassword.getText();
+            String pass2 = txtConfirm.getText();
+            
+            if (!validator.matchPassword(pass1, pass2)) {
+                errorTrigger = errorPoint;
+                triggered = true;
+            }
+        }
+        
+        System.out.println("errorPoint = " + errorTrigger + "\n"
+        + "triggered = " + triggered);
+        
+        if (triggered) {
+            return false;
+        }
+        
+        return true;
     }
     
     private void calcDays() {
@@ -474,6 +546,8 @@ public class RegistrationForm extends javax.swing.JFrame {
         int dayIndex = cbxDay.getSelectedIndex();
         int monthIndex = cbxMonth.getSelectedIndex();
         int yearIndex = cbxYear.getSelectedIndex();
+        
+        
         
         if (yearIndex != 0) {
             selectedYear = Integer.parseInt(cbxYear.getSelectedItem().toString());
