@@ -1,10 +1,10 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * The EditUser from was written by Ryan Gallagher
  */
 
 package assesment;
+
+import java.util.Calendar;
 
 /**
  *
@@ -17,6 +17,16 @@ public class EditUser extends javax.swing.JFrame {
      */
     public EditUser() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        
+        //Fill cbxYear with all years from 1900 to the current year
+        cbxYear.removeAllItems();
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        
+        for(int i = 1900; i<= year; i++){
+            cbxYear.addItem(i);
+        }
+        
     }
 
     /**

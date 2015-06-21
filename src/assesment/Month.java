@@ -1,5 +1,5 @@
 /*
- * Author: Ryan Gallagher
+ * Month.java was written by Ryan Gallagher
  */
 
 package assesment;
