@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+//Form output done by Nick
 package assesment;
+
+import java.util.Calendar;
 
 /**
  *
@@ -18,6 +20,10 @@ public class FormOutput extends javax.swing.JFrame {
      */
     public FormOutput() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        
+        
+        
     }
 
     /**

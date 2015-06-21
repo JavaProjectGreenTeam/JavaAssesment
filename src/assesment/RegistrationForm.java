@@ -4,6 +4,7 @@
 package assesment;
 
 import java.sql.Date;
+import java.util.Calendar;
 
 public class RegistrationForm extends javax.swing.JFrame {
 
@@ -18,8 +19,14 @@ public class RegistrationForm extends javax.swing.JFrame {
 
         initComponents();
         this.setLocationRelativeTo(null);
+       // calendar for loop done by Joe and Ryan 
+        cbxYear.removeAllItems();
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        
+        for(int i = 1900; i<= year; i++){
+            cbxYear.addItem(i);
     }
-
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -350,7 +357,7 @@ public class RegistrationForm extends javax.swing.JFrame {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         // TODO add your handling code here:
-      //add new user
+      //add new user done joe and Nick
         String fName = txtFirstName.getText();
         String lName = txtSurname.getText();
         String email = txtEmail.getText();
