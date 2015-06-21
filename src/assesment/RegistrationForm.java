@@ -5,6 +5,7 @@ package assesment;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPasswordField;
@@ -51,6 +52,13 @@ public class RegistrationForm extends javax.swing.JFrame {
         }
         setCbx(cbxMonth, monthArray);
    
+        // calendar for loop done by Joe and Ryan 
+        cbxYear.removeAllItems();
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        
+        for(int i = 1900; i<= year; i++){
+            cbxYear.addItem(i);
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
