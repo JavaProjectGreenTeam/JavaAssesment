@@ -533,6 +533,60 @@ public class RegistrationForm extends javax.swing.JFrame {
         + "triggered = " + triggered);
         
         if (triggered) {
+            switch(errorTrigger) {
+                case 1:
+                    //First Name is required
+                    break;
+                    
+                case 2:
+                    //Surname is required
+                    break;
+                    
+                case 3:
+                    //Email is required
+                    break;
+                    
+                case 4:
+                    //Town is required
+                    break;
+                    
+                case 5:
+                    //Password is required
+                    break;
+                    
+                case 6:
+                    //Confirm Password is required
+                    break;
+                    
+                case 7:
+                    //Gender selection is required
+                    break;
+                    
+                case 8:
+                    //State is required
+                    break;
+                    
+                case 9:
+                    //Day is required
+                    break;
+                    
+                case 10:
+                    //Month is required
+                    break;
+                    
+                case 11:
+                    //Year is required
+                    break;
+                    
+                case 12:
+                    //Email isn't valid (must contain "@" and ".")
+                    break;
+                    
+                case 13:
+                    //Passwords don't match
+                    break;
+            }
+            
             return false;
         }
         
