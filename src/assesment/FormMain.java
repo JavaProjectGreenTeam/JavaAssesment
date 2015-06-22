@@ -33,11 +33,13 @@ public class FormMain extends javax.swing.JFrame {
         
         //this.setExtendedState(this.getExtendedState() | FormMain.MAXIMIZED_BOTH);
         
+        //user = new User("test", "man", "test@.", "test", 0, 2, 1, "Town", null);
+        
         //Set the current user label
         if (user != null) {
-            String firstInitial = user.getFirstName().substring(0, 0).toUpperCase();
+            String firstInitial = user.getFirstName().substring(0, 1).toUpperCase();
             String firstNameNoInitial = user.getFirstName().substring(1);
-            String lastInitial = user.getLastName().substring(0, 0);
+            String lastInitial = user.getLastName().substring(0, 1).toUpperCase();
             currentUser = firstInitial + firstNameNoInitial + " " + lastInitial;
             lblUser.setText(currentUser);
         } else {
