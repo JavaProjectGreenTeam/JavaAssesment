@@ -44,8 +44,8 @@ public class DBInterface {
             result = statement.executeQuery(queryString);
             return result;
             
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
+        } catch (SQLException ex) {
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -62,39 +62,31 @@ public class DBInterface {
             result = prepStatement.executeQuery();
             return result;
             
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
+        } catch (SQLException ex) {
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
     
         //Get a User's stored information based off email and password
     ResultSet getUserLogin(String email, String password) {
-        System.out.println("Email: " + email);
-        System.out.println("Password: " + password);
         try {
-            
-            /* Prepared statement not working correctly (Parameter index out of range (1 > number of parameters, which is 0).)
             String queryString = "SELECT * FROM user WHERE email = ? AND password = ?";
             
             PreparedStatement prepStatement = connection.prepareStatement(queryString);
             prepStatement.setString(1, email);
             prepStatement.setString(2, password);
             
-            prepStatement.execute();
-            //result = prepStatement.executeQuery();
-            */
+            result = prepStatement.executeQuery();
             
-            String queryString = "SELECT * FROM user WHERE email = '" + email + "' AND password = '" + password + "'";
-            System.out.println(queryString);
-            result = statement.executeQuery(queryString);
+            while (result.next()) {
+                updateUserLastLogin(result.getInt("id"));
+            }
             
-            System.out.println("Result: " + result);
-            updateUserLastLogin(result.getInt("id"));
             return result;
-            
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -232,8 +224,8 @@ public class DBInterface {
             result = prepStatement.executeQuery();
             return result;
             
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
+        } catch (SQLException ex) {
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -251,8 +243,8 @@ public class DBInterface {
             result = prepStatement.executeQuery();
             return result;
             
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
+        } catch (SQLException ex) {
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
