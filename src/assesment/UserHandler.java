@@ -47,28 +47,26 @@ public class UserHandler {
         ResultSet result;
         User user;
         
-        System.out.println("Executing Login");
-       
         result = db.getUserLogin(email, password);
         
-        System.out.println("Continuing Login");
-        System.out.println(result);
-        
         if (result != null) {
+            user = null;
+            
             try {
-                id = result.getInt("id");
-                firstName = result.getString("firstName");
-                lastName = result.getString("lastName");
-                email = result.getString("email");
-                password = result.getString("password");
-                accountType = result.getInt("accountType");
-                sex = result.getInt("sex");
-                state = result.getInt("state");
-                town = result.getString("town");
-                dob = result.getDate("dob");
-                
-
-                user = new User(id, firstName, lastName, email, password, accountType, sex, state, town, dob); 
+                while (result.next()) {
+                    id = result.getInt("id");
+                    firstName = result.getString("firstName");
+                    lastName = result.getString("lastName");
+                    email = result.getString("email");
+                    password = result.getString("password");
+                    accountType = result.getInt("accountType");
+                    sex = result.getInt("sex");
+                    state = result.getInt("state");
+                    town = result.getString("town");
+                    dob = result.getDate("dob"); 
+                    
+                    user = new User(id, firstName, lastName, email, password, accountType, sex, state, town, dob); 
+                }
                 
                 return user;
                 
