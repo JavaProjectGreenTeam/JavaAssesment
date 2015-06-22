@@ -16,9 +16,10 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
     /**
      * Creates new form eduser
      */
+    User user;
     FromStdEditUser EditMyAcc;
     FormMain myhome;
-    public FromStdEditUser() 
+    public FromStdEditUser(User user) 
     {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -380,7 +381,7 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
         // TODO add your handling code here:
         if (myhome == null){
-            myhome = new FormMain();
+            myhome = new FormMain(user);
         }
         myhome.setVisible(true);
         this.setVisible(false);
@@ -417,7 +418,7 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FromStdEditUser().setVisible(true);
+                new FromStdEditUser(null).setVisible(true);
             }
         });
     }

@@ -47,12 +47,15 @@ public class UserHandler {
         ResultSet result;
         User user;
         
+        System.out.println("Executing Login");
        
         result = db.getUserLogin(email, password);
         
+        System.out.println("Continuing Login");
+        System.out.println(result);
+        
         if (result != null) {
             try {
-                
                 id = result.getInt("id");
                 firstName = result.getString("firstName");
                 lastName = result.getString("lastName");
