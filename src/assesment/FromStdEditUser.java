@@ -5,25 +5,49 @@
  */
 package assesment;
     
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 
 /**
  *
- * @author 5100246815
+ * @author James Buttigieg
  */
 public class FromStdEditUser   extends  javax.swing.JFrame {
-    
+    ResultSet user;
+    DBInterface db = new DBInterface();
     /**
      * Creates new form eduser
      */
     FromStdEditUser EditMyAcc;
     FormMain myhome;
-    public FromStdEditUser() 
+ int userId ;
+    public FromStdEditUser(User user) 
     {
         initComponents();
         this.setLocationRelativeTo(null);
+        
+        //populate table
+         db.getUser(userId);
+      try{
+          
+         String firstName = user.getFirstName();
+         String lastName = user.getLastName();
+         String email = user.getEmail();
+         String password = user.getPassword();
+         int sex = user.getSex();
+         int state = user.getState();
+         String town = user.getTown();
+         Date dob = user.getDob();
+        
+         
+         
+          }catch (Exception ex){
+              System.out.println("Error: "+ex.getMessage());
     }
- 
+     }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -52,11 +76,11 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         jTextField6 = new javax.swing.JTextField();
         lblPass = new javax.swing.JLabel();
         txtPass = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox();
+        cbxState = new javax.swing.JComboBox();
         jPanel3 = new javax.swing.JPanel();
-        jComboBox2 = new javax.swing.JComboBox();
-        jComboBox3 = new javax.swing.JComboBox();
-        jComboBox4 = new javax.swing.JComboBox();
+        cbxDay = new javax.swing.JComboBox();
+        cbxMonth = new javax.swing.JComboBox();
+        cbxYear = new javax.swing.JComboBox();
         jPanel4 = new javax.swing.JPanel();
         lblSex = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
@@ -247,10 +271,10 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 1);
         jPanel2.add(txtPass, gridBagConstraints);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Your State", "QLD", "NSW", "ACT", "VIC", "WA", "SA", "NT", "TAS" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        cbxState.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Your State", "QLD", "NSW", "ACT", "VIC", "WA", "SA", "NT", "TAS" }));
+        cbxState.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                cbxStateActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -260,37 +284,42 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 2;
         gridBagConstraints.ipady = 2;
-        jPanel2.add(jComboBox1, gridBagConstraints);
+        jPanel2.add(cbxState, gridBagConstraints);
 
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", " " }));
-        jComboBox2.setPreferredSize(null);
+        cbxDay.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", " " }));
+        cbxDay.setPreferredSize(null);
+        cbxDay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxDayActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.ipadx = 9;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 7, 32);
-        jPanel3.add(jComboBox2, gridBagConstraints);
+        jPanel3.add(cbxDay, gridBagConstraints);
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Month", "January", "February", "March", "April ", "May ", "June ", "July ", "August ", "September ", "October ", "November ", "December" }));
-        jComboBox3.setMinimumSize(new java.awt.Dimension(20, 20));
+        cbxMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Month", "January", "February", "March", "April ", "May ", "June ", "July ", "August ", "September ", "October ", "November ", "December" }));
+        cbxMonth.setMinimumSize(new java.awt.Dimension(20, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.ipadx = 16;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 7, 26);
-        jPanel3.add(jComboBox3, gridBagConstraints);
+        jPanel3.add(cbxMonth, gridBagConstraints);
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Year", "Item 2", "Item 3", "Item 4" }));
+        cbxYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Year", "Item 2", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(9, 1, 7, 27);
-        jPanel3.add(jComboBox4, gridBagConstraints);
+        jPanel3.add(cbxYear, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -364,12 +393,14 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void cbxStateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxStateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_cbxStateActionPerformed
 
     private void btnSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubActionPerformed
         // TODO add your handling code here:
+        
+//        db.updateUser(firstName, null, null, null, null, WIDTH, WIDTH, WIDTH, null, null)
     }//GEN-LAST:event_btnSubActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
@@ -386,6 +417,10 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         this.setVisible(false);
         
     }//GEN-LAST:event_btnHomeActionPerformed
+
+    private void cbxDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDayActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxDayActionPerformed
 
     /**
      * @param args the command line arguments
@@ -416,8 +451,9 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new FromStdEditUser().setVisible(true);
+                new FromStdEditUser(null).setVisible(true);
             }
         });
     }
@@ -427,10 +463,10 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
     private javax.swing.JButton btnHome;
     private javax.swing.JButton btnSub;
     private javax.swing.ButtonGroup buttonGroupSex;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
-    private javax.swing.JComboBox jComboBox4;
+    private javax.swing.JComboBox cbxDay;
+    private javax.swing.JComboBox cbxMonth;
+    private javax.swing.JComboBox cbxState;
+    private javax.swing.JComboBox cbxYear;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
