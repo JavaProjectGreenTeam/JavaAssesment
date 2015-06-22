@@ -68,6 +68,25 @@ public class DBInterface {
         return null;
     }
     
+        //Get user by email
+    ResultSet getUserByEmail(String email) {
+        try {
+            String queryString = "SELECT * FROM user"
+                    + " WHERE email = \'" + email + "\'" ;
+            
+//            PreparedStatement prepStatement = connection.prepareStatement(queryString);
+//            prepStatement.setString(1, email);
+//            
+//            result = prepStatement.executeQuery();
+            result = result = statement.executeQuery(queryString);
+            return result;
+            
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return null;
+    }
+    
         //Get a User's stored information based off email and password
     ResultSet getUserLogin(String email, String password) {
         try {

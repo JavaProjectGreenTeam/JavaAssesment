@@ -1,9 +1,12 @@
 /*
- * The EditUser from was written by Ryan Gallagher
+ * The EditUser form was written by Ryan Gallagher
  */
 
 package assesment;
 
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Calendar;
 
 /**
@@ -11,11 +14,13 @@ import java.util.Calendar;
  * @author 8100627115
  */
 public class EditUser extends javax.swing.JFrame {
-
+    ResultSet users;
+    DBInterface db;
     /**
      * Creates new form editUser
+     * @param user
      */
-    public EditUser() {
+    public EditUser(User user) {
         initComponents();
         this.setLocationRelativeTo(null);
         
@@ -26,6 +31,9 @@ public class EditUser extends javax.swing.JFrame {
         for(int i = 1900; i<= year; i++){
             cbxYear.addItem(i);
         }
+        
+        db = new DBInterface();
+        populateDropdown();
         
     }
 
@@ -319,6 +327,11 @@ public class EditUser extends javax.swing.JFrame {
         cbxpnlUserSelect.setLayout(new java.awt.GridBagLayout());
 
         cbxUserSelect.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select a user to edit", "Item 2", "Item 3", "Item 4" }));
+        cbxUserSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxUserSelectActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -378,6 +391,69 @@ public class EditUser extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
 
+    private void cbxUserSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxUserSelectActionPerformed
+        db = new DBInterface();
+//        populateFields();
+//        String name = (String) this.cbxName.getSelectedItem();
+//        String myAge = myDb.getDataByName(name);
+//        this.txtAge.setText(myAge);
+    }//GEN-LAST:event_cbxUserSelectActionPerformed
+    
+        //fill the user select dropdown box with a list of all the users on the database
+    private void populateDropdown(){
+        users = db.getAllUsers();
+        cbxUserSelect.removeAllItems();
+        try{
+            cbxUserSelect.addItem("Select a User to Edit");
+            while(users.next()){
+                String email = users.getString("email");
+                cbxUserSelect.addItem(email);
+            }
+        }catch(SQLException ex){
+            System.out.println("Error: " + ex.getMessage());
+        }
+        
+    }
+    
+        //fill all fields with the selected users information
+    private void populateFields(){
+        String email = this.cbxUserSelect.getSelectedItem().toString();
+        users = db.getUserByEmail(email);
+        
+       
+        try{
+            if(users.next()){
+                String firstName = users.getString("firstName");
+                String lastName = users.getString("lastName");
+                String password = users.getString("password");
+                String town = users.getString("town");
+                int accountType = users.getInt("accountType");
+                int sex = users.getInt("sex");
+                int state = users.getInt("state");
+                String dob = users.getDate("dob").toString();
+            
+                this.txtFirstName.setText(firstName);
+                this.txtSurname.setText(lastName);
+                this.txtEmail.setText(email);
+                this.pwdPassword.setText(password);
+                this.pwdConfirmPassword.setText(password);
+                this.txtTown.setText(town);
+                this.cbxAccountType.setSelectedIndex(accountType);
+                this.cbxState.setSelectedIndex(state);
+
+                if(sex == 0){
+                    this.radbtnMale.setSelected(true);
+                }else if(sex == 1){
+                    this.radbtnFemale.setSelected(true);
+                }else{
+                    this.radbtnOther.setSelected(true);
+                }
+            }             
+        }catch(SQLException ex){
+            System.out.println("Error: " + ex.getMessage());
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -408,7 +484,7 @@ public class EditUser extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EditUser().setVisible(true);
+                new EditUser(null).setVisible(true);
             }
         });
     }
