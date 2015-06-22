@@ -1,7 +1,11 @@
 package assesment;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -12,6 +16,7 @@ public class FormMain extends javax.swing.JFrame {
     //Initialize & Define Variables
     String currentUser;
     User user;
+    DBInterface db;
     
     FormOutput formOutput;
     
@@ -31,6 +36,8 @@ public class FormMain extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         
+        db = new DBInterface();
+        
         //this.setExtendedState(this.getExtendedState() | FormMain.MAXIMIZED_BOTH);
         
         //user = new User("test", "man", "test@.", "test", 0, 2, 1, "Town", null);
@@ -48,14 +55,14 @@ public class FormMain extends javax.swing.JFrame {
         
         comboDefaultArray.addAll(Arrays.asList("Select An Option..."));
         
-        combo1Array.addAll(Arrays.asList("Select An Option...", "Business", "Creaetive Industries", "Health", "Community Services"));
+        //combo1Array.addAll(Arrays.asList("Select An Option...", "Business", "Creaetive Industries", "Health", "Community Services"));
         combo2Array.addAll(Arrays.asList("Select An Option...", "Accounting", "Business", "Human Resources", "Information Technology", "Management", "Tourism & Hospitality"));
         combo3Array.addAll(Arrays.asList("Select An Option...", "Career Pathways", "Essential Employability Skills"));
         combo4Array.addAll(Arrays.asList("Select An Option...", "Cert IV in IT", "Diploma of Software Development", "Diploma of Networking"));
         combo5Array.addAll(Arrays.asList("Select An Option...", "Trainee Application Programmer", "Trainee Business/System's Analyst", "Web Developer", "Trainee Database Programmer", "Trainee Programming Tester", "Trainee Maintenance Programmer", "Articulation Pathway to Bachelor in IT"));
         combo6Array.addAll(Arrays.asList("Select An Option...", "Job Description", "Statistical Data On Demand/Salary Range"));
         
-        cbx1.setModel(new javax.swing.DefaultComboBoxModel(combo1Array.toArray()));
+        //cbx1.setModel(new javax.swing.DefaultComboBoxModel(combo1Array.toArray()));
         cbx2.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
         cbx3.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
         cbx4.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
@@ -69,6 +76,7 @@ public class FormMain extends javax.swing.JFrame {
         cbx6.setEnabled(false);
         
         //btnSubmit.setEnabled(false);
+        populateDefaultComboBox();
     }
 
     /**
@@ -390,6 +398,32 @@ public class FormMain extends javax.swing.JFrame {
 //        String queryString = "SELECT firstName FROM user WHERE id = ?";
     }//GEN-LAST:event_lblUserInputMethodTextChanged
 
+    private void populateDefaultComboBox() {
+        ResultSet result;
+        String text;
+        
+        ArrayList<String> textArray = new ArrayList<>();
+        
+        textArray.add("Select An Option...");
+        
+        for (int i = 1; i <= 4; i++) {
+             result = db.getField(0, i);
+             
+             try {
+                 while (result.next()) {
+                    text = result.getString("text");
+                    textArray.add(text); 
+                 } 
+             } catch (SQLException ex) {
+                 System.out.println("Error: " + ex.getMessage());
+             }
+        }
+        setCbx(cbx1, textArray);
+    }
+    
+    private void setCbx(JComboBox cbx, ArrayList<String> array) {
+        cbx.setModel(new DefaultComboBoxModel(array.toArray()));
+    }
     /**
      * @param args the command line arguments
      */
