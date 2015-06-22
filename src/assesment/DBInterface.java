@@ -21,6 +21,7 @@ public class DBInterface {
     private Connection connection;
     private Statement statement;
     private ResultSet result;
+    private ResultSet resultCopy;
     
     
     //Database Connection Method
@@ -71,7 +72,8 @@ public class DBInterface {
         //Get a User's stored information based off email and password
     ResultSet getUserLogin(String email, String password) {
         try {
-            String queryString = "SELECT * FROM user WHERE email = ? AND password = ?";
+            String queryString = "SELECT * FROM user"
+                    + " WHERE email = ? AND password = ?";
             
             PreparedStatement prepStatement = connection.prepareStatement(queryString);
             prepStatement.setString(1, email);
@@ -83,6 +85,7 @@ public class DBInterface {
                 updateUserLastLogin(result.getInt("id"));
             }
             
+            result.beforeFirst();
             return result;
         
         } catch (SQLException ex) {
