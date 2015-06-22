@@ -1,8 +1,5 @@
 package assesment;
 
-import javax.swing.JOptionPane;
-import java.sql.*;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -17,7 +14,8 @@ public class LoginScreen extends javax.swing.JFrame {
 
     RegistrationForm myReg;
     FormMain myForm;
-    DBInterface db;
+    UserHandler handler;
+    User user;
 
     /**
      * Creates new form LoginScreen
@@ -26,6 +24,7 @@ public class LoginScreen extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
 
+        handler = new UserHandler();
     }
 
     /**
@@ -39,11 +38,11 @@ public class LoginScreen extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
+        btnLogin = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        btnRegister = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
 
@@ -52,17 +51,17 @@ public class LoginScreen extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        jButton3.setText("Login");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnLogin.setText("Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnLoginActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
-        jPanel1.add(jButton3, gridBagConstraints);
+        jPanel1.add(btnLogin, gridBagConstraints);
 
         jLabel4.setText("Password");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -85,17 +84,17 @@ public class LoginScreen extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         jPanel1.add(txtEmail, gridBagConstraints);
 
-        jButton4.setText("Create Account");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnRegister.setText("Create Account");
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnRegisterActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 26, 0);
-        jPanel1.add(jButton4, gridBagConstraints);
+        jPanel1.add(btnRegister, gridBagConstraints);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -122,8 +121,7 @@ public class LoginScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 // to registration form
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         if (myReg == null) {
             myReg = new RegistrationForm();
         }
@@ -132,20 +130,34 @@ public class LoginScreen extends javax.swing.JFrame {
         this.setVisible(false);
 
 
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnRegisterActionPerformed
 // login button action performed
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        if (myForm == null) {
-            myForm = new FormMain();
-          }
-        myForm.setVisible(true);
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        String email = txtEmail.getText();
+        String password = txtPassword.getText();
+        
+        if (!email.equals("") && !password.equals("")) {
+            user = handler.login(email, password);
+            
+            if (user != null) {
+                if (myForm == null) {
+                    myForm = new FormMain(user);
+                }
+                myForm.setVisible(true);
+                this.setVisible(false);
+            }
+        } else {
+            if (email.equals("")) {
+                
+            } else if (password.equals("")) {
+                
+            }
+        }
+        
+        
 
-        this.setVisible(false);
-      //user id information
 
-
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -183,8 +195,8 @@ public class LoginScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnLogin;
+    private javax.swing.JButton btnRegister;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
