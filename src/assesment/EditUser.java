@@ -392,6 +392,7 @@ public class EditUser extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void cbxUserSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxUserSelectActionPerformed
+        /**********BUG: Fields in the user edit form do not populate**********/
         db = new DBInterface();
 //        populateFields();
 //        String name = (String) this.cbxName.getSelectedItem();
