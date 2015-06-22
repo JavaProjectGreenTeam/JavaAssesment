@@ -70,15 +70,26 @@ public class DBInterface {
     
         //Get a User's stored information based off email and password
     ResultSet getUserLogin(String email, String password) {
+        System.out.println("Email: " + email);
+        System.out.println("Password: " + password);
         try {
-            String queryString = "SELECT * FROM user"
-                    + " WHERE email = '?' AND password = '?'";
+            
+            /* Prepared statement not working correctly (Parameter index out of range (1 > number of parameters, which is 0).)
+            String queryString = "SELECT * FROM user WHERE email = ? AND password = ?";
             
             PreparedStatement prepStatement = connection.prepareStatement(queryString);
             prepStatement.setString(1, email);
             prepStatement.setString(2, password);
             
-            result = prepStatement.executeQuery();
+            prepStatement.execute();
+            //result = prepStatement.executeQuery();
+            */
+            
+            String queryString = "SELECT * FROM user WHERE email = '" + email + "' AND password = '" + password + "'";
+            System.out.println(queryString);
+            result = statement.executeQuery(queryString);
+            
+            System.out.println("Result: " + result);
             updateUserLastLogin(result.getInt("id"));
             return result;
             
@@ -92,7 +103,7 @@ public class DBInterface {
     boolean updateUserLastLogin(int userId) {
         try {
             String queryString = "UPDATE user"
-                    + " SET lastLogin = NOW"
+                    + " SET lastLogin = NOW()"
                     + " WHERE id = ?";
             
             PreparedStatement prepStatement = connection.prepareStatement(queryString);
