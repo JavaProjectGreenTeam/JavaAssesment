@@ -204,12 +204,11 @@ public class DBInterface {
         try {
             String queryString = "INSERT INTO userhistory"
                     + " (userId, accessDate, accessPath)"
-                    + " VALUES (?, ?, ?)";
+                    + " VALUES (?, NOW(), ?)";
             
             PreparedStatement prepStatement = connection.prepareStatement(queryString);
             prepStatement.setInt(1, userId);
-            prepStatement.setString(2, "NOW");
-            prepStatement.setString(3, accessPath);
+            prepStatement.setString(2, accessPath);
             
             prepStatement.execute();
             
@@ -242,12 +241,12 @@ public class DBInterface {
         //Get a selector field based off id and tableId
     ResultSet getField(int tableId, int id) {
         try {
-            String queryString = "SELECT * FROM ?"
+            String queryString = "SELECT * FROM " + Tables.getById(tableId)
                     + " WHERE id = ?";
             
             PreparedStatement prepStatement = connection.prepareStatement(queryString);
-            prepStatement.setString(1, Tables.getById(tableId));
-            prepStatement.setInt(2, id);
+            //prepStatement.setString(1, Tables.getById(tableId));
+            prepStatement.setInt(1, id);
             
             result = prepStatement.executeQuery();
             return result;
@@ -263,14 +262,13 @@ public class DBInterface {
         try {
             ArrayList<ResultSet> resultArray = new ArrayList<>();
             
-            String queryString = "SELECT * FROM ?"
-                    + " WHERE parentTable = ? AND parent = ?";
-            
             for (int i = 1; i <= 3; i++) {
+                String queryString = "SELECT * FROM " + Tables.getById(i)
+                    + " WHERE parentTable = ? AND parent = ?";
+                
                 PreparedStatement prepStatement = connection.prepareStatement(queryString);
-                prepStatement.setString(1, Tables.getById(i));
-                prepStatement.setInt(2, parentTableId);
-                prepStatement.setInt(3, parentId);
+                prepStatement.setInt(1, parentTableId);
+                prepStatement.setInt(2, parentId);
                 
                 result = prepStatement.executeQuery();
                 
