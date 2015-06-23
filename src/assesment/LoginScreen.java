@@ -1,5 +1,6 @@
 package assesment;
 
+import java.awt.Color;
 import javax.swing.JOptionPane;
 import java.sql.*;
 
@@ -24,6 +25,8 @@ public class LoginScreen extends javax.swing.JFrame {
      */
     public LoginScreen() {
         initComponents();
+        
+        //getContentPane().setBackground(Color.red);
         this.setLocationRelativeTo(null);
 
     }

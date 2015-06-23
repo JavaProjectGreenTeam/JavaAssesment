@@ -68,6 +68,25 @@ public class DBInterface {
         return null;
     }
     
+        //Get user by email
+    ResultSet getUserByEmail(String email) {
+        try {
+            String queryString = "SELECT * FROM user"
+                    + " WHERE email = \'" + email + "\'" ;
+            
+//            PreparedStatement prepStatement = connection.prepareStatement(queryString);
+//            prepStatement.setString(1, email);
+//            
+//            result = prepStatement.executeQuery();
+            result = result = statement.executeQuery(queryString);
+            return result;
+            
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return null;
+    }
+    
         //Get a User's stored information based off email and password
     ResultSet getUserLogin(String email, String password) {
         try {
@@ -140,10 +159,10 @@ public class DBInterface {
     }
     
         //Update an existing User entry
-    boolean updateUser(int userId, String firstName, String lastName, String email, String password, int accountType, int sex, int state, String town, String dob) {
+    boolean updateUser(int userId, String firstName, String lastName, String email, String password, int accountType, int sex, int state, String town, Date dob) {
         try {
             String queryString = "UPDATE user"
-                    + " SET firstName = ?, lastName = ?, email = ?, password = ?, accountType = ?, sex = ?, state = ?, town = ?, dob = ?, lastLogin = ?"
+                    + " SET firstName = ?, lastName = ?, email = ?, password = ?, accountType = ?, sex = ?, state = ?, town = ?, dob = ?, lastLogin = NOW()"
                     + " WHERE id = ?";
             
             PreparedStatement prepStatement = connection.prepareStatement(queryString);
@@ -155,9 +174,8 @@ public class DBInterface {
             prepStatement.setInt(6, sex);
             prepStatement.setInt(7, state);
             prepStatement.setString(8, town);
-            prepStatement.setString(9, dob);
-            prepStatement.setString(10, "NOW");
-            prepStatement.setInt(11, userId);
+            prepStatement.setDate(9, dob);
+            prepStatement.setInt(10, userId);
             
             prepStatement.execute();
             
