@@ -7,17 +7,27 @@ package assesment;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 
 /**
  *
  * @author 8100627115
  */
 public class EditUser extends javax.swing.JFrame {
-//    ResultSet users;
     DBInterface db;
+    UserHandler handler;
+    Validator validator;
+    FormMain mainForm;
+    int id = 0;
+    
+    ArrayList<String> stateArray = new ArrayList<>();
+    ArrayList<String> monthArray = new ArrayList<>();
+    ArrayList<String> dayArray = new ArrayList<>();
     /**
      * Creates new form editUser
      * @param user
@@ -27,15 +37,37 @@ public class EditUser extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         db = new DBInterface();
         
+        handler = new UserHandler();
+        validator = new Validator();
+        
         //Fill cbxYear with all years from 1900 to the current year
+               
+        populateDropdown();
+        
+        stateArray.add("Select your state");
+        for (int i = 0; i <= 7; i++) {
+            stateArray.add(State.getById(i));
+        }
+        setCbx(cbxState, stateArray);
+        
+        dayArray.add("Day");
+        for (int i = 1; i <= 31; i++) {
+            dayArray.add(Integer.toString(i));
+        }
+        setCbx(cbxDay, dayArray);
+        
+        monthArray.add("Month");
+        for (int i = 1; i <= 12; i++) {
+            monthArray.add(Month.getById(i));
+        }
+        setCbx(cbxMonth, monthArray);
+        
         cbxYear.removeAllItems();
         int year = Calendar.getInstance().get(Calendar.YEAR);
-        
-        for(int i = 1900; i<= year; i++){
+        cbxYear.addItem("Year");
+        for(int i = year; i>= 1900; i--){
             cbxYear.addItem(i);
         }
-        
-        populateDropdown();
         
     }
 
@@ -100,7 +132,6 @@ public class EditUser extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
         pnlEditUser.add(lblTitle, gridBagConstraints);
 
-        cbxState.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select your state", "Queensland", "New South Wales", "Australian Capital Territory", "Victoria", "Tasmania", "South Australia", "Western Australia", "Northern Territory" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 19;
@@ -239,21 +270,28 @@ public class EditUser extends javax.swing.JFrame {
 
         cbxpnlDateOfBirth.setLayout(new java.awt.GridBagLayout());
 
-        cbxDay.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
         cbxpnlDateOfBirth.add(cbxDay, gridBagConstraints);
 
-        cbxMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
+        cbxMonth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxMonthActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
         cbxpnlDateOfBirth.add(cbxMonth, gridBagConstraints);
 
-        cbxYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Year", "Item 2", "Item 3", "Item 4" }));
+        cbxYear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxYearActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -283,6 +321,11 @@ public class EditUser extends javax.swing.JFrame {
         btnSubmit.setMaximumSize(new java.awt.Dimension(80, 28));
         btnSubmit.setMinimumSize(new java.awt.Dimension(80, 28));
         btnSubmit.setPreferredSize(new java.awt.Dimension(80, 28));
+        btnSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubmitActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -397,17 +440,77 @@ public class EditUser extends javax.swing.JFrame {
             populateFields();
         }
     }//GEN-LAST:event_cbxUserSelectActionPerformed
+
+    private void cbxMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxMonthActionPerformed
+        calcDays();
+    }//GEN-LAST:event_cbxMonthActionPerformed
+
+    private void cbxYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxYearActionPerformed
+        calcDays();
+    }//GEN-LAST:event_cbxYearActionPerformed
+
+    private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+        boolean checkSuccess = true;//checkFields();
+        if (checkSuccess) {
+            int sex;
+            int accountType;
+
+            //Get variables from form elements
+            String fName = txtFirstName.getText();
+            String lName = txtSurname.getText();
+            String email = txtEmail.getText();
+            String password = pwdPassword.getText();
+            String accountName = cbxAccountType.getSelectedItem().toString();
+            int state = cbxState.getSelectedIndex();
+            String town = txtTown.getText();
+            int day = Integer.parseInt(cbxDay.getSelectedItem().toString());
+            int month = cbxMonth.getSelectedIndex();
+            int year = Integer.parseInt(cbxYear.getSelectedItem().toString());
+            
+
+            if (radbtnMale.isSelected()) {
+                sex = 0;
+            } else if (radbtnFemale.isSelected()) {
+                sex = 1;
+            } else {
+                sex = 2;
+            }
+            
+            if(accountName.equalsIgnoreCase("Standard User")){
+                accountType = 0;
+            }else{
+                accountType = 1;
+            }
+
+            //Create date value from individial day, month, year variables
+            String dobString = String.format("%d-%02d-%02d", year, month, day);
+            Date dob = Date.valueOf(dobString);
+
+//            User user = new User(fName, lName, email, password, accountType, sex, state, town, dob);
+//            boolean success = handler.updateUser(user);
+
+            boolean success = db.updateUser(id, fName, lName, email, password, accountType, sex, state, town, dob);
+            
+            if (success) {
+                // links back to login screen
+                if (mainForm == null) {
+                    mainForm = new FormMain();
+                }
+                mainForm.setVisible(true);
+
+                this.setVisible(false);
+            }
+        }
+    }//GEN-LAST:event_btnSubmitActionPerformed
     
         //fill the user select dropdown box with a list of all the users on the database
     private void populateDropdown(){
         ResultSet users = db.getAllUsers();
         cbxUserSelect.removeAllItems();
         cbxUserSelect.addItem("Select a User to Edit");
-        System.out.println(users);
         try{
             while(users.next()){
                 String email = users.getString("email");
-                System.out.println(email);
                 cbxUserSelect.addItem(email);
             }
         }catch(SQLException ex){
@@ -431,6 +534,7 @@ public class EditUser extends javax.swing.JFrame {
                 int sex = user.getInt("sex");
                 int state = user.getInt("state");
                 String dob = user.getDate("dob").toString();
+                id = user.getInt("id");
             
                 this.txtFirstName.setText(firstName);
                 this.txtSurname.setText(lastName);
@@ -453,6 +557,65 @@ public class EditUser extends javax.swing.JFrame {
             System.out.println("Error: " + ex.getMessage());
         }
     }
+    
+    //Nicholas Lambell
+    private void setCbx(JComboBox cbx, ArrayList<String> array) {
+        cbx.setModel(new DefaultComboBoxModel(array.toArray()));
+    }
+    
+    //Nicholas Lambell
+    private void calcDays() {
+        int days;
+        int selectedYear = 0;
+        
+        int dayIndex = cbxDay.getSelectedIndex();
+        int monthIndex = cbxMonth.getSelectedIndex();
+        int yearIndex = cbxYear.getSelectedIndex();
+        
+        
+        
+        if (yearIndex != 0) {
+            selectedYear = Integer.parseInt(cbxYear.getSelectedItem().toString());
+        }
+        
+        //Determine what month is selected and set number of days depending on that
+        if (monthIndex != 0) {
+            if (monthIndex == 1 || monthIndex == 3 || monthIndex == 5 || monthIndex == 7 || monthIndex == 8 || monthIndex == 10 || monthIndex == 12) {
+                days = 31;
+                
+            } else if (monthIndex == 4 || monthIndex == 6 || monthIndex == 9 || monthIndex == 11) {
+                days = 30;
+                
+            } else if (monthIndex == 2 && yearIndex != 0) {
+                //Check if year is leap year
+                if ((selectedYear % 4 == 0) && (selectedYear % 100 != 0) || (selectedYear % 400 == 0)) {
+                    days = 29;
+                    
+                } else {
+                    days = 28;
+                }
+            } else {
+                days = 0;
+            }
+            
+            //Construct the new values and set to days combo box
+            if (days != 0) {
+                dayArray.clear();
+                dayArray.add("Day");
+                for (int i = 1; i <= days; i++) {
+                    dayArray.add(Integer.toString(i));
+                }
+                setCbx(cbxDay, dayArray);
+            }
+            
+            //Set the selected day to the previous selected day
+            if (dayIndex != 0 && ((dayIndex) <= Integer.parseInt(dayArray.get(dayArray.size() - 1)))) {
+                cbxDay.setSelectedIndex(dayIndex);
+            }
+        }
+    }
+    
+    
     
     /**
      * @param args the command line arguments
