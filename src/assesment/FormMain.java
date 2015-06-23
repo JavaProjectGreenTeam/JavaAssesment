@@ -21,6 +21,9 @@ public class FormMain extends javax.swing.JFrame {
     DBInterface db;
     
     FormOutput formOutput;
+    LoginScreen login;
+    FromStdEditUser standardEdit;
+    EditUser adminEdit;
     
     ArrayList<String> comboDefaultArray = new ArrayList();
     ArrayList<String> combo1Array = new ArrayList<>();
@@ -102,7 +105,7 @@ public class FormMain extends javax.swing.JFrame {
         btnExit = new javax.swing.JButton();
         btnSubmit = new javax.swing.JButton();
         lblUser = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        cbxActions = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -281,17 +284,17 @@ public class FormMain extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 0);
         jPanel1.add(lblUser, gridBagConstraints);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Options...", "Edit Information", "Log Out" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        cbxActions.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Options...", "Edit Information", "Log Out" }));
+        cbxActions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                cbxActionsActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LAST_LINE_END;
-        jPanel1.add(jComboBox2, gridBagConstraints);
+        jPanel1.add(cbxActions, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -381,11 +384,33 @@ public class FormMain extends javax.swing.JFrame {
         
     }//GEN-LAST:event_lblUserInputMethodTextChanged
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void cbxActionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxActionsActionPerformed
+        int selectedIndex = cbxActions.getSelectedIndex();
         
-        
-        //if ()
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+        if (selectedIndex == 1 && user != null) {
+            if (user.isAdmin()) {
+                if (adminEdit == null) {
+                    adminEdit = new EditUser(user);
+                }
+                adminEdit.setVisible(true);
+                this.setVisible(false);
+            } else {
+                if (standardEdit == null) {
+                    standardEdit = new FromStdEditUser(user);
+                }
+                standardEdit.setVisible(true);
+                this.setVisible(false);
+            }
+            
+        } else if (selectedIndex == 2) {
+            user = null;
+            if (login == null) {
+                    login = new LoginScreen();
+                }
+                login.setVisible(true);
+                this.setVisible(false);
+        }
+    }//GEN-LAST:event_cbxActionsActionPerformed
 
     private void setCurrentUser() {
         System.out.println("User: " + user);
@@ -470,7 +495,7 @@ public class FormMain extends javax.swing.JFrame {
     private javax.swing.JComboBox cbx4;
     private javax.swing.JComboBox cbx5;
     private javax.swing.JComboBox cbx6;
-    private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JComboBox cbxActions;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
