@@ -23,6 +23,7 @@ public class EditUser extends javax.swing.JFrame {
     UserHandler handler;
     Validator validator;
     FormMain mainForm;
+    User user;
     int id = 0;
     
     ArrayList<String> stateArray = new ArrayList<>();
@@ -32,10 +33,11 @@ public class EditUser extends javax.swing.JFrame {
      * Creates new form editUser
      * @param user
      */
-    public EditUser(User user) {
+    public EditUser(User passUser) {
         initComponents();
         this.setLocationRelativeTo(null);
         db = new DBInterface();
+        user = passUser;
         
         handler = new UserHandler();
         validator = new Validator();
@@ -494,7 +496,7 @@ public class EditUser extends javax.swing.JFrame {
             if (success) {
                 // links back to login screen
                 if (mainForm == null) {
-                    mainForm = new FormMain();
+                    mainForm = new FormMain(user);
                 }
                 mainForm.setVisible(true);
 
