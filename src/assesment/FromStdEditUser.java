@@ -8,6 +8,11 @@ package assesment;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+
 
 
 
@@ -18,17 +23,48 @@ import java.sql.SQLException;
 public class FromStdEditUser   extends  javax.swing.JFrame {
     ResultSet user;
     DBInterface db = new DBInterface();
+    ArrayList<String> stateArray = new ArrayList<>();
+    ArrayList<String> monthArray = new ArrayList<>();
+    ArrayList<String> dayArray = new ArrayList<>();
     /**
      * Creates new form eduser
      */
     FromStdEditUser EditMyAcc;
     FormMain myhome;
  int userId ;
+ 
+ 
     public FromStdEditUser(User user) 
     {
         initComponents();
         this.setLocationRelativeTo(null);
+        //Populate the state dropdown from State enum
+        stateArray.add("Select your state");
+        for (int i = 0; i <= 7; i++) {
+            stateArray.add(State.getById(i));
+        }
+        setCbx(cbxState, stateArray);
         
+        //Populate the default day dropdown
+        dayArray.add("Day");
+        for (int i = 1; i <= 31; i++) {
+            dayArray.add(Integer.toString(i));
+        }
+        setCbx(cbxDay, dayArray);
+        
+        //Populate the month dropdown from Month enum
+        monthArray.add("Month");
+        for (int i = 1; i <= 12; i++) {
+            monthArray.add(Month.getById(i));
+        }
+        setCbx(cbxMonth, monthArray);
+        //Fill cbxYear with all years from 1900 to the current year
+        cbxYear.removeAllItems();
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        cbxYear.addItem("Year");
+        for(int i = 1900; i<= year; i++){
+            cbxYear.addItem(i);
+        }
         //populate table
          db.getUser(userId);
       try{
@@ -271,7 +307,6 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 1);
         jPanel2.add(txtPass, gridBagConstraints);
 
-        cbxState.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Your State", "QLD", "NSW", "ACT", "VIC", "WA", "SA", "NT", "TAS" }));
         cbxState.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxStateActionPerformed(evt);
@@ -288,8 +323,6 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
 
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        cbxDay.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", " " }));
-        cbxDay.setPreferredSize(null);
         cbxDay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxDayActionPerformed(evt);
@@ -303,17 +336,27 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 7, 32);
         jPanel3.add(cbxDay, gridBagConstraints);
 
-        cbxMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Month", "January", "February", "March", "April ", "May ", "June ", "July ", "August ", "September ", "October ", "November ", "December" }));
-        cbxMonth.setMinimumSize(new java.awt.Dimension(20, 20));
+        cbxMonth.setMinimumSize(new java.awt.Dimension(77, 20));
+        cbxMonth.setPreferredSize(new java.awt.Dimension(77, 20));
+        cbxMonth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxMonthActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.ipadx = 16;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 7, 26);
         jPanel3.add(cbxMonth, gridBagConstraints);
 
-        cbxYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Year", "Item 2", "Item 3", "Item 4" }));
+        cbxYear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxYearActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -400,7 +443,7 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
     private void btnSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubActionPerformed
         // TODO add your handling code here:
         
-//        db.updateUser(firstName, null, null, null, null, WIDTH, WIDTH, WIDTH, null, null)
+//db.updateUser(firstName, null, null, null, null, WIDTH, WIDTH, WIDTH, null, null)
     }//GEN-LAST:event_btnSubActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
@@ -422,6 +465,68 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxDayActionPerformed
 
+    private void cbxMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxMonthActionPerformed
+        calcDays();
+    }//GEN-LAST:event_cbxMonthActionPerformed
+
+    private void cbxYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxYearActionPerformed
+        // TODO add your handling code here:
+        calcDays();
+    }//GEN-LAST:event_cbxYearActionPerformed
+
+    private void calcDays() {
+        int days;
+        int selectedYear = 0;
+        
+        int dayIndex = cbxDay.getSelectedIndex();
+        int monthIndex = cbxMonth.getSelectedIndex();
+        int yearIndex = cbxYear.getSelectedIndex();
+        
+        
+        
+        if (yearIndex != 0) {
+            selectedYear = Integer.parseInt(cbxYear.getSelectedItem().toString());
+        }
+        
+        //Determine what month is selected and set number of days depending on that
+        if (monthIndex != 0) {
+            if (monthIndex == 1 || monthIndex == 3 || monthIndex == 5 || monthIndex == 7 || monthIndex == 8 || monthIndex == 10 || monthIndex == 12) {
+                days = 31;
+                
+            } else if (monthIndex == 4 || monthIndex == 6 || monthIndex == 9 || monthIndex == 11) {
+                days = 30;
+                
+            } else if (monthIndex == 2 && yearIndex != 0) {
+                //Check if year is leap year
+                if ((selectedYear % 4 == 0) && (selectedYear % 100 != 0) || (selectedYear % 400 == 0)) {
+                    days = 29;
+                    
+                } else {
+                    days = 28;
+                }
+            } else {
+                days = 0;
+            }
+            
+            //Construct the new values and set to days combo box
+            if (days != 0) {
+                dayArray.clear();
+                dayArray.add("Day");
+                for (int i = 1; i <= days; i++) {
+                    dayArray.add(Integer.toString(i));
+                }
+                setCbx(cbxDay, dayArray);
+            }
+            
+            //Set the selected day to the previous selected day
+            if (dayIndex != 0 && ((dayIndex) <= Integer.parseInt(dayArray.get(dayArray.size() - 1)))) {
+                cbxDay.setSelectedIndex(dayIndex);
+            }
+        }
+    }
+    private void setCbx(JComboBox cbx, ArrayList<String> array) {
+        cbx.setModel(new DefaultComboBoxModel(array.toArray()));
+    }
     /**
      * @param args the command line arguments
      */
