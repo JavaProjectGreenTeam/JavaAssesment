@@ -21,6 +21,7 @@ public class DBInterface {
     private Connection connection;
     private Statement statement;
     private ResultSet result;
+    private ResultSet resultCopy;
     
     
     //Database Connection Method
@@ -44,8 +45,8 @@ public class DBInterface {
             result = statement.executeQuery(queryString);
             return result;
             
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
+        } catch (SQLException ex) {
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -62,8 +63,8 @@ public class DBInterface {
             result = prepStatement.executeQuery();
             return result;
             
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
+        } catch (SQLException ex) {
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -91,18 +92,23 @@ public class DBInterface {
     ResultSet getUserLogin(String email, String password) {
         try {
             String queryString = "SELECT * FROM user"
-                    + " WHERE email = '?' AND password = '?'";
+                    + " WHERE email = ? AND password = ?";
             
             PreparedStatement prepStatement = connection.prepareStatement(queryString);
             prepStatement.setString(1, email);
             prepStatement.setString(2, password);
             
             result = prepStatement.executeQuery();
-            updateUserLastLogin(result.getInt("id"));
-            return result;
             
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
+            while (result.next()) {
+                updateUserLastLogin(result.getInt("id"));
+            }
+            
+            result.beforeFirst();
+            return result;
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -111,7 +117,7 @@ public class DBInterface {
     boolean updateUserLastLogin(int userId) {
         try {
             String queryString = "UPDATE user"
-                    + " SET lastLogin = NOW"
+                    + " SET lastLogin = NOW()"
                     + " WHERE id = ?";
             
             PreparedStatement prepStatement = connection.prepareStatement(queryString);
@@ -211,12 +217,11 @@ public class DBInterface {
         try {
             String queryString = "INSERT INTO userhistory"
                     + " (userId, accessDate, accessPath)"
-                    + " VALUES (?, ?, ?)";
+                    + " VALUES (?, NOW(), ?)";
             
             PreparedStatement prepStatement = connection.prepareStatement(queryString);
             prepStatement.setInt(1, userId);
-            prepStatement.setString(2, "NOW");
-            prepStatement.setString(3, accessPath);
+            prepStatement.setString(2, accessPath);
             
             prepStatement.execute();
             
@@ -240,8 +245,8 @@ public class DBInterface {
             result = prepStatement.executeQuery();
             return result;
             
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
+        } catch (SQLException ex) {
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -249,18 +254,18 @@ public class DBInterface {
         //Get a selector field based off id and tableId
     ResultSet getField(int tableId, int id) {
         try {
-            String queryString = "SELECT * FROM ?"
+            String queryString = "SELECT * FROM " + Tables.getById(tableId)
                     + " WHERE id = ?";
             
             PreparedStatement prepStatement = connection.prepareStatement(queryString);
-            prepStatement.setString(1, Tables.getById(tableId));
-            prepStatement.setInt(2, id);
+            //prepStatement.setString(1, Tables.getById(tableId));
+            prepStatement.setInt(1, id);
             
             result = prepStatement.executeQuery();
             return result;
             
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
+        } catch (SQLException ex) {
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -270,14 +275,13 @@ public class DBInterface {
         try {
             ArrayList<ResultSet> resultArray = new ArrayList<>();
             
-            String queryString = "SELECT * FROM ?"
-                    + " WHERE parentTable = ? AND parent = ?";
-            
             for (int i = 1; i <= 3; i++) {
+                String queryString = "SELECT * FROM " + Tables.getById(i)
+                    + " WHERE parentTable = ? AND parent = ?";
+                
                 PreparedStatement prepStatement = connection.prepareStatement(queryString);
-                prepStatement.setString(1, Tables.getById(i));
-                prepStatement.setInt(2, parentTableId);
-                prepStatement.setInt(3, parentId);
+                prepStatement.setInt(1, parentTableId);
+                prepStatement.setInt(2, parentId);
                 
                 result = prepStatement.executeQuery();
                 

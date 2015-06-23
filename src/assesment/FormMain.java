@@ -1,7 +1,12 @@
 package assesment;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -9,10 +14,11 @@ import java.util.Arrays;
  */
 //Main Form done by Nick
 public class FormMain extends javax.swing.JFrame {
-    //Initialize & Define Variables
-    
-    boolean panel1Visible;
-    boolean panel2Visible;
+    //Define Variables
+    String currentUser;
+    String defaultOption;
+    User user;
+    DBInterface db;
     
     FormOutput formOutput;
     
@@ -26,38 +32,50 @@ public class FormMain extends javax.swing.JFrame {
     
     /**
      * Creates new form FormMain
+     * @param passUser
      */
-    public FormMain() {
+    public FormMain(User passUser) {
+        //Initialize Form and Set Positioning
         initComponents();
         this.setLocationRelativeTo(null);
-        
-        this.setLocationRelativeTo(null);
-        
         //this.setExtendedState(this.getExtendedState() | FormMain.MAXIMIZED_BOTH);
         
+        //Initialize Variables
+        db = new DBInterface();
+        user = passUser;
+        defaultOption = "Select An Option...";
+        
+        //Set the current user label
+        setCurrentUser();
+        
+        //Populate the first comboBox with values from industries database table
+        populateDefaultComboBox();
+        
+        /*
         comboDefaultArray.addAll(Arrays.asList("Select An Option..."));
         
-        combo1Array.addAll(Arrays.asList("Select An Option...", "Business", "Creaetive Industries", "Health", "Community Services"));
+        //combo1Array.addAll(Arrays.asList("Select An Option...", "Business", "Creaetive Industries", "Health", "Community Services"));
         combo2Array.addAll(Arrays.asList("Select An Option...", "Accounting", "Business", "Human Resources", "Information Technology", "Management", "Tourism & Hospitality"));
         combo3Array.addAll(Arrays.asList("Select An Option...", "Career Pathways", "Essential Employability Skills"));
         combo4Array.addAll(Arrays.asList("Select An Option...", "Cert IV in IT", "Diploma of Software Development", "Diploma of Networking"));
         combo5Array.addAll(Arrays.asList("Select An Option...", "Trainee Application Programmer", "Trainee Business/System's Analyst", "Web Developer", "Trainee Database Programmer", "Trainee Programming Tester", "Trainee Maintenance Programmer", "Articulation Pathway to Bachelor in IT"));
         combo6Array.addAll(Arrays.asList("Select An Option...", "Job Description", "Statistical Data On Demand/Salary Range"));
         
-        combo1.setModel(new javax.swing.DefaultComboBoxModel(combo1Array.toArray()));
-        combo2.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
-        combo3.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
-        combo4.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
-        combo5.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
-        combo6.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
+        //cbx1.setModel(new javax.swing.DefaultComboBoxModel(combo1Array.toArray()));
+        cbx2.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
+        cbx3.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
+        cbx4.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
+        cbx5.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
+        cbx6.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
         
-        combo2.setEnabled(false);
-        combo3.setEnabled(false);
-        combo4.setEnabled(false);
-        combo5.setEnabled(false);
-        combo6.setEnabled(false);
+        cbx2.setEnabled(false);
+        cbx3.setEnabled(false);
+        cbx4.setEnabled(false);
+        cbx5.setEnabled(false);
+        cbx6.setEnabled(false);
         
         //btnSubmit.setEnabled(false);
+        */
     }
 
     /**
@@ -70,20 +88,20 @@ public class FormMain extends javax.swing.JFrame {
 
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
-        combo4 = new javax.swing.JComboBox();
-        combo5 = new javax.swing.JComboBox();
-        combo1 = new javax.swing.JComboBox();
+        cbx4 = new javax.swing.JComboBox();
+        cbx5 = new javax.swing.JComboBox();
+        cbx1 = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        combo2 = new javax.swing.JComboBox();
-        combo3 = new javax.swing.JComboBox();
-        combo6 = new javax.swing.JComboBox();
+        cbx2 = new javax.swing.JComboBox();
+        cbx3 = new javax.swing.JComboBox();
+        cbx6 = new javax.swing.JComboBox();
         jSeparator3 = new javax.swing.JSeparator();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         btnExit = new javax.swing.JButton();
         btnSubmit = new javax.swing.JButton();
-        lbUserID = new javax.swing.JLabel();
+        lblUser = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -92,9 +110,9 @@ public class FormMain extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        combo4.addActionListener(new java.awt.event.ActionListener() {
+        cbx4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo4ActionPerformed(evt);
+                cbx4ActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -103,11 +121,11 @@ public class FormMain extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
-        jPanel1.add(combo4, gridBagConstraints);
+        jPanel1.add(cbx4, gridBagConstraints);
 
-        combo5.addActionListener(new java.awt.event.ActionListener() {
+        cbx5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo5ActionPerformed(evt);
+                cbx5ActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -116,11 +134,11 @@ public class FormMain extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
-        jPanel1.add(combo5, gridBagConstraints);
+        jPanel1.add(cbx5, gridBagConstraints);
 
-        combo1.addActionListener(new java.awt.event.ActionListener() {
+        cbx1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo1ActionPerformed(evt);
+                cbx1ActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -129,7 +147,7 @@ public class FormMain extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
-        jPanel1.add(combo1, gridBagConstraints);
+        jPanel1.add(cbx1, gridBagConstraints);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("Find My Career");
@@ -150,9 +168,9 @@ public class FormMain extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
         jPanel1.add(jSeparator1, gridBagConstraints);
 
-        combo2.addActionListener(new java.awt.event.ActionListener() {
+        cbx2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo2ActionPerformed(evt);
+                cbx2ActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -161,11 +179,11 @@ public class FormMain extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
-        jPanel1.add(combo2, gridBagConstraints);
+        jPanel1.add(cbx2, gridBagConstraints);
 
-        combo3.addActionListener(new java.awt.event.ActionListener() {
+        cbx3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo3ActionPerformed(evt);
+                cbx3ActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -174,11 +192,11 @@ public class FormMain extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
-        jPanel1.add(combo3, gridBagConstraints);
+        jPanel1.add(cbx3, gridBagConstraints);
 
-        combo6.addActionListener(new java.awt.event.ActionListener() {
+        cbx6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo6ActionPerformed(evt);
+                cbx6ActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -187,7 +205,7 @@ public class FormMain extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
-        jPanel1.add(combo6, gridBagConstraints);
+        jPanel1.add(cbx6, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -248,12 +266,12 @@ public class FormMain extends javax.swing.JFrame {
         gridBagConstraints.weightx = 0.2;
         jPanel1.add(jPanel3, gridBagConstraints);
 
-        lbUserID.setText("Logged In User");
-        lbUserID.addInputMethodListener(new java.awt.event.InputMethodListener() {
+        lblUser.setText("Logged In User");
+        lblUser.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                lbUserIDInputMethodTextChanged(evt);
+                lblUserInputMethodTextChanged(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -261,9 +279,14 @@ public class FormMain extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 0);
-        jPanel1.add(lbUserID, gridBagConstraints);
+        jPanel1.add(lblUser, gridBagConstraints);
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Options...", "Edit Information", "Log Out" }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -286,99 +309,123 @@ public class FormMain extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
 
-    private void combo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo1ActionPerformed
-        if (combo1.getSelectedIndex() != 0) {
-            if (combo1.getSelectedItem().toString().equals("Business")) {
-                combo2.setEnabled(true);
-                combo2.setModel(new javax.swing.DefaultComboBoxModel(combo2Array.toArray()));
-            
-            }
-        } else {
-            combo2.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
-            combo2.setSelectedIndex(0);
-            combo2.setEnabled(false);
-        }
-    }//GEN-LAST:event_combo1ActionPerformed
-
-    private void combo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo2ActionPerformed
-        if (combo2.getSelectedIndex() != 0) {
-            if (combo2.getSelectedItem().toString().equals("Information Technology")) {
-                combo3.setEnabled(true);
-                combo3.setModel(new javax.swing.DefaultComboBoxModel(combo3Array.toArray()));
-            
-            }
-        } else {
-            combo3.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
-            combo3.setSelectedIndex(0);
-            combo3.setEnabled(false);
-        }
-    }//GEN-LAST:event_combo2ActionPerformed
-
-    private void combo3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo3ActionPerformed
-        if (combo3.getSelectedIndex() != 0) {
-            if (combo3.getSelectedItem().toString().equals("Career Pathways")) {
-                combo4.setEnabled(true);
-                combo4.setModel(new javax.swing.DefaultComboBoxModel(combo4Array.toArray()));
-            
-            }
-        } else {
-            combo4.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
-            combo4.setSelectedIndex(0);
-            combo4.setEnabled(false);
-        }
-    }//GEN-LAST:event_combo3ActionPerformed
-
-    private void combo4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo4ActionPerformed
-        if (combo4.getSelectedIndex() != 0) {
-            if (combo4.getSelectedItem().toString().equals("Diploma of Software Development")) {
-                combo5.setEnabled(true);
-                combo5.setModel(new javax.swing.DefaultComboBoxModel(combo5Array.toArray()));
-            
-            }
-        } else {
-            combo5.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
-            combo5.setSelectedIndex(0);
-            combo5.setEnabled(false);
-        }
-    }//GEN-LAST:event_combo4ActionPerformed
-
-    private void combo5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo5ActionPerformed
-        if (combo5.getSelectedIndex() != 0) {
-            if (combo5.getSelectedItem().toString().equals("Trainee Application Programmer")) {
-                combo6.setEnabled(true);
-                combo6.setModel(new javax.swing.DefaultComboBoxModel(combo6Array.toArray()));
-            
-            }
-        } else {
-            combo6.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
-            combo6.setSelectedIndex(0);
-            combo6.setEnabled(false);
-        }
-    }//GEN-LAST:event_combo5ActionPerformed
-
-    private void combo6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo6ActionPerformed
-        if (combo6.getSelectedIndex() != 0) {
-            btnSubmit.setEnabled(true);
+    private void cbx1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx1ActionPerformed
+        String text;
+        ResultSet result;
+        ArrayList<String> textArray = new ArrayList<>();
         
-        } else {
-            btnSubmit.setEnabled(false);
+        int selectionIndex = cbx1.getSelectedIndex();
+        ArrayList<ResultSet> resultArray = db.getFieldByParent(0, selectionIndex);
+        
+        textArray.add(defaultOption);
+        
+        for (int i = 0; i < resultArray.size() - 1; i++) {
+            result = resultArray.get(i);
+
+            try {
+                while (result.next()) {
+                    text = result.getString("text");
+                    textArray.add(text);
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-    }//GEN-LAST:event_combo6ActionPerformed
+        
+        setCbx(cbx2, textArray);
+        
+        /* Old placeholder comboBox code
+        if (cbx1.getSelectedIndex() != 0) {
+            if (cbx1.getSelectedItem().toString().equals("Business")) {
+                cbx2.setEnabled(true);
+                cbx2.setModel(new javax.swing.DefaultComboBoxModel(combo2Array.toArray()));
+            
+            }
+        } else {
+            cbx2.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
+            cbx2.setSelectedIndex(0);
+            cbx2.setEnabled(false);
+        }*/
+    }//GEN-LAST:event_cbx1ActionPerformed
+
+    private void cbx2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx2ActionPerformed
+        
+    }//GEN-LAST:event_cbx2ActionPerformed
+
+    private void cbx3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx3ActionPerformed
+        
+    }//GEN-LAST:event_cbx3ActionPerformed
+
+    private void cbx4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx4ActionPerformed
+        
+    }//GEN-LAST:event_cbx4ActionPerformed
+
+    private void cbx5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx5ActionPerformed
+        
+    }//GEN-LAST:event_cbx5ActionPerformed
+
+    private void cbx6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx6ActionPerformed
+        
+    }//GEN-LAST:event_cbx6ActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         if (formOutput == null) {
-            formOutput = new FormOutput();
+            formOutput = new FormOutput(user);
         }
         formOutput.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnSubmitActionPerformed
 
-    private void lbUserIDInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_lbUserIDInputMethodTextChanged
-        // TODO add your handling code here:
-//        System.getProperty(firstName);
-//        String queryString = "SELECT firstName FROM user WHERE id = ?";
-    }//GEN-LAST:event_lbUserIDInputMethodTextChanged
+    private void lblUserInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_lblUserInputMethodTextChanged
+        
+    }//GEN-LAST:event_lblUserInputMethodTextChanged
 
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        
+        
+        //if ()
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void setCurrentUser() {
+        System.out.println("User: " + user);
+        if (user != null) {
+            String firstInitial = user.getFirstName().substring(0, 1).toUpperCase();
+            String firstNameNoInitial = user.getFirstName().substring(1);
+            String lastInitial = user.getLastName().substring(0, 1).toUpperCase();
+            currentUser = firstInitial + firstNameNoInitial + " " + lastInitial;
+            lblUser.setText(currentUser);
+        } else {
+            lblUser.setText("Current User");
+        }
+    }
+    
+    private void populateDefaultComboBox() {
+        ResultSet result;
+        String text;
+        
+        ArrayList<String> textArray = new ArrayList<>();
+        
+        textArray.add(defaultOption);
+        
+        for (int i = 1; i <= 4; i++) {
+             result = db.getField(0, i);
+             
+             try {
+                 while (result.next()) {
+                    text = result.getString("text");
+                    textArray.add(text); 
+                 } 
+             } catch (SQLException ex) {
+                 Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
+             }
+        }
+        setCbx(cbx1, textArray);
+    }
+    
+    private void setCbx(JComboBox cbx, ArrayList<String> array) {
+        cbx.setModel(new DefaultComboBoxModel(array.toArray()));
+    }
     /**
      * @param args the command line arguments
      */
@@ -409,7 +456,7 @@ public class FormMain extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormMain().setVisible(true);
+                new FormMain(null).setVisible(true);
             }
         });
     }
@@ -417,12 +464,12 @@ public class FormMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnSubmit;
-    private javax.swing.JComboBox combo1;
-    private javax.swing.JComboBox combo2;
-    private javax.swing.JComboBox combo3;
-    private javax.swing.JComboBox combo4;
-    private javax.swing.JComboBox combo5;
-    private javax.swing.JComboBox combo6;
+    private javax.swing.JComboBox cbx1;
+    private javax.swing.JComboBox cbx2;
+    private javax.swing.JComboBox cbx3;
+    private javax.swing.JComboBox cbx4;
+    private javax.swing.JComboBox cbx5;
+    private javax.swing.JComboBox cbx6;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
@@ -431,6 +478,6 @@ public class FormMain extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSplitPane jSplitPane1;
-    public javax.swing.JLabel lbUserID;
+    public javax.swing.JLabel lblUser;
     // End of variables declaration//GEN-END:variables
 }

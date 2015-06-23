@@ -6,19 +6,17 @@
 //Form output done by Nick
 package assesment;
 
-import java.util.Calendar;
-
 /**
  *
  * @author 3100298414
  */
 public class FormOutput extends javax.swing.JFrame {
-
+    User user;
     FormMain myMain;
     /**
      * Creates new form FormOutput
      */
-    public FormOutput() {
+    public FormOutput(User user) {
         initComponents();
         this.setLocationRelativeTo(null);
         
@@ -105,7 +103,7 @@ public class FormOutput extends javax.swing.JFrame {
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
         // TODO add your handling code here:
         if (myMain == null) {
-            myMain = new FormMain();
+            myMain = new FormMain(user);
             
         }
         myMain.setVisible(true);
@@ -142,7 +140,7 @@ public class FormOutput extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormOutput().setVisible(true);
+                new FormOutput(null).setVisible(true);
             }
         });
     }
