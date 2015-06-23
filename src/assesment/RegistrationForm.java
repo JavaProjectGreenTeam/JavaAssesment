@@ -56,7 +56,7 @@ public class RegistrationForm extends javax.swing.JFrame {
         cbxYear.removeAllItems();
         int year = Calendar.getInstance().get(Calendar.YEAR);
         cbxYear.addItem("Year");
-        for(int i = 1900; i<= year; i++){
+        for(int i = year; i >= 1900; i--){
             cbxYear.addItem(i);
         }
     }
