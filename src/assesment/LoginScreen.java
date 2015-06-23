@@ -1,5 +1,7 @@
 package assesment;
 
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -141,17 +143,18 @@ public class LoginScreen extends javax.swing.JFrame {
             
             if (user != null) {
                 if (myForm == null) {
-                    System.out.println("Login User: " + user);
                     myForm = new FormMain(user);
                 }
                 myForm.setVisible(true);
                 this.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Email or Password are incorrect");
             }
         } else {
             if (email.equals("")) {
-                
+                JOptionPane.showMessageDialog(null, "Please enter an email");
             } else if (password.equals("")) {
-                
+                JOptionPane.showMessageDialog(null, "Please enter a password");
             }
         }
         
