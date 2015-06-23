@@ -8,13 +8,15 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author 8100627115
  */
 public class EditUser extends javax.swing.JFrame {
-    ResultSet users;
+//    ResultSet users;
     DBInterface db;
     /**
      * Creates new form editUser
@@ -23,6 +25,7 @@ public class EditUser extends javax.swing.JFrame {
     public EditUser(User user) {
         initComponents();
         this.setLocationRelativeTo(null);
+        db = new DBInterface();
         
         //Fill cbxYear with all years from 1900 to the current year
         cbxYear.removeAllItems();
@@ -32,7 +35,6 @@ public class EditUser extends javax.swing.JFrame {
             cbxYear.addItem(i);
         }
         
-        db = new DBInterface();
         populateDropdown();
         
     }
@@ -326,7 +328,6 @@ public class EditUser extends javax.swing.JFrame {
 
         cbxpnlUserSelect.setLayout(new java.awt.GridBagLayout());
 
-        cbxUserSelect.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select a user to edit", "Item 2", "Item 3", "Item 4" }));
         cbxUserSelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxUserSelectActionPerformed(evt);
@@ -392,26 +393,25 @@ public class EditUser extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void cbxUserSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxUserSelectActionPerformed
-        /**********BUG: Fields in the user edit form do not populate**********/
-        db = new DBInterface();
-//        populateFields();
-//        String name = (String) this.cbxName.getSelectedItem();
-//        String myAge = myDb.getDataByName(name);
-//        this.txtAge.setText(myAge);
+        if(cbxUserSelect.getSelectedIndex() != 0){
+            populateFields();
+        }
     }//GEN-LAST:event_cbxUserSelectActionPerformed
     
         //fill the user select dropdown box with a list of all the users on the database
     private void populateDropdown(){
-        users = db.getAllUsers();
+        ResultSet users = db.getAllUsers();
         cbxUserSelect.removeAllItems();
+        cbxUserSelect.addItem("Select a User to Edit");
+        System.out.println(users);
         try{
-            cbxUserSelect.addItem("Select a User to Edit");
             while(users.next()){
                 String email = users.getString("email");
+                System.out.println(email);
                 cbxUserSelect.addItem(email);
             }
         }catch(SQLException ex){
-            System.out.println("Error: " + ex.getMessage());
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
@@ -419,19 +419,18 @@ public class EditUser extends javax.swing.JFrame {
         //fill all fields with the selected users information
     private void populateFields(){
         String email = this.cbxUserSelect.getSelectedItem().toString();
-        users = db.getUserByEmail(email);
+        ResultSet user = db.getUserByEmail(email);
         
-       
         try{
-            if(users.next()){
-                String firstName = users.getString("firstName");
-                String lastName = users.getString("lastName");
-                String password = users.getString("password");
-                String town = users.getString("town");
-                int accountType = users.getInt("accountType");
-                int sex = users.getInt("sex");
-                int state = users.getInt("state");
-                String dob = users.getDate("dob").toString();
+            if(user.next()){
+                String firstName = user.getString("firstName");
+                String lastName = user.getString("lastName");
+                String password = user.getString("password");
+                String town = user.getString("town");
+                int accountType = user.getInt("accountType");
+                int sex = user.getInt("sex");
+                int state = user.getInt("state");
+                String dob = user.getDate("dob").toString();
             
                 this.txtFirstName.setText(firstName);
                 this.txtSurname.setText(lastName);
