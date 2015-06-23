@@ -32,9 +32,9 @@ public class FormMain extends javax.swing.JFrame {
     
     /**
      * Creates new form FormMain
-     * @param user
+     * @param passUser
      */
-    public FormMain(User user) {
+    public FormMain(User passUser) {
         //Initialize Form and Set Positioning
         initComponents();
         this.setLocationRelativeTo(null);
@@ -42,6 +42,7 @@ public class FormMain extends javax.swing.JFrame {
         
         //Initialize Variables
         db = new DBInterface();
+        user = passUser;
         defaultOption = "Select An Option...";
         
         //Set the current user label
@@ -306,10 +307,10 @@ public class FormMain extends javax.swing.JFrame {
     private void cbx1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx1ActionPerformed
         String text;
         ResultSet result;
+        ArrayList<String> textArray = new ArrayList<>();
         
         int selectionIndex = cbx1.getSelectedIndex();
         ArrayList<ResultSet> resultArray = db.getFieldByParent(0, selectionIndex);
-        ArrayList<String> textArray = new ArrayList<>();
         
         textArray.add(defaultOption);
         
@@ -376,6 +377,7 @@ public class FormMain extends javax.swing.JFrame {
     }//GEN-LAST:event_lblUserInputMethodTextChanged
 
     private void setCurrentUser() {
+        System.out.println("User: " + user);
         if (user != null) {
             String firstInitial = user.getFirstName().substring(0, 1).toUpperCase();
             String firstNameNoInitial = user.getFirstName().substring(1);

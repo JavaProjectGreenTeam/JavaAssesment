@@ -141,6 +141,7 @@ public class LoginScreen extends javax.swing.JFrame {
             
             if (user != null) {
                 if (myForm == null) {
+                    System.out.println("Login User: " + user);
                     myForm = new FormMain(user);
                 }
                 myForm.setVisible(true);
