@@ -42,12 +42,12 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         currentUser = passUser;
-        int years = 2000;
-        int months = 3;
-        int days = 10;
-        String dobStrings = String.format("%d-%02d-%02d", years, months,  days);
-        Date dobs = Date.valueOf(dobStrings);
-        currentUser = new User(00001, "Walter", "White", "walt@white.com", "password", 0, 0, 6, "texas", dobs);
+//        int years = 2000;
+//        int months = 3;
+//        int days = 10;
+//        String dobStrings = String.format("%d-%02d-%02d", years, months,  days);
+//        Date dobs = Date.valueOf(dobStrings);
+        //currentUser = new User(00001, "Walter", "White", "walt@white.com", "password", 0, 0, 6, "texas", dobs);
         
         //Populate the state dropdown from State enum
         stateArray.add("Select your state");
