@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -542,54 +543,67 @@ public class RegistrationForm extends javax.swing.JFrame {
             switch(errorTrigger) {
                 case 1:
                     //First Name is required
+                    JOptionPane.showMessageDialog(null, "First Name is a required field");
                     break;
                     
                 case 2:
                     //Surname is required
+                    JOptionPane.showMessageDialog(null, "Surname is a required field");
                     break;
                     
                 case 3:
                     //Email is required
+                    JOptionPane.showMessageDialog(null, "Email is a required field");
                     break;
                     
                 case 4:
                     //Town is required
+                    JOptionPane.showMessageDialog(null, "Town is a required field");
                     break;
                     
                 case 5:
                     //Password is required
+                    JOptionPane.showMessageDialog(null, "Password is a required field");
                     break;
                     
                 case 6:
                     //Confirm Password is required
+                    JOptionPane.showMessageDialog(null, "Confirm Password is a required field");
                     break;
                     
                 case 7:
                     //Gender selection is required
+                    JOptionPane.showMessageDialog(null, "Gender is a required field");
                     break;
                     
                 case 8:
                     //State is required
+                    JOptionPane.showMessageDialog(null, "State is a required field");
                     break;
                     
                 case 9:
                     //Day is required
+                    JOptionPane.showMessageDialog(null, "Day is a required field");
                     break;
                     
                 case 10:
                     //Month is required
+                    JOptionPane.showMessageDialog(null, "Month is a required field");
                     break;
                     
                 case 11:
                     //Year is required
+                    JOptionPane.showMessageDialog(null, "Year is a required field");
                     break;
                     
                 case 12:
                     //Email isn't valid (must contain "@" and ".")
+                    JOptionPane.showMessageDialog(null, "Email is not valid, must follow x@x.x");
                     break;
                     
                 case 13:
                     //Passwords don't match
+                    JOptionPane.showMessageDialog(null, "Passwords do not match");
                     break;
             }
             
