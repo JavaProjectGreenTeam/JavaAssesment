@@ -29,16 +29,17 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
     /**
      * Creates new form eduser
      */
-    User user;
+    User currentUser;
     FromStdEditUser EditMyAcc;
     FormMain myhome;
  int userId ;
  
  
-    public FromStdEditUser(User user) 
+    public FromStdEditUser(User passUser) 
     {
         initComponents();
         this.setLocationRelativeTo(null);
+        currentUser = passUser;
         //Populate the state dropdown from State enum
         stateArray.add("Select your state");
         for (int i = 0; i <= 7; i++) {
@@ -70,14 +71,14 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
          db.getUser(userId);
       try{
           
-         String firstName = user.getFirstName();
-         String lastName = user.getLastName();
-         String email = user.getEmail();
-         String password = user.getPassword();
-         int sex = user.getSex();
-         int state = user.getState();
-         String town = user.getTown();
-         Date dob = user.getDob();
+         String firstName = currentUser.getFirstName();
+         String lastName = currentUser.getLastName();
+         String email = currentUser.getEmail();
+         String password = currentUser.getPassword();
+         int sex = currentUser.getSex();
+         int state = currentUser.getState();
+         String town = currentUser.getTown();
+         Date dob = currentUser.getDob();
         
          
          
@@ -455,7 +456,7 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
         // TODO add your handling code here:
         if (myhome == null){
-            myhome = new FormMain(user);
+            myhome = new FormMain(currentUser);
         }
         myhome.setVisible(true);
         this.setVisible(false);
