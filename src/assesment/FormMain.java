@@ -282,6 +282,11 @@ public class FormMain extends javax.swing.JFrame {
         jPanel1.add(lblUser, gridBagConstraints);
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Options...", "Edit Information", "Log Out" }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -375,6 +380,12 @@ public class FormMain extends javax.swing.JFrame {
     private void lblUserInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_lblUserInputMethodTextChanged
         
     }//GEN-LAST:event_lblUserInputMethodTextChanged
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        
+        
+        //if ()
+    }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void setCurrentUser() {
         System.out.println("User: " + user);
