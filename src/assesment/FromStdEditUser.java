@@ -1,4 +1,5 @@
 /*
+ * @author James Buttigieg
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -22,6 +23,7 @@ import javax.swing.JComboBox;
  */
 public class FromStdEditUser   extends  javax.swing.JFrame {
     ResultSet user;
+    int id;
     DBInterface db = new DBInterface();
     ArrayList<String> stateArray = new ArrayList<>();
     ArrayList<String> monthArray = new ArrayList<>();
@@ -40,6 +42,13 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         currentUser = passUser;
+        int years = 2000;
+        int months = 3;
+        int days = 10;
+        String dobStrings = String.format("%d-%02d-%02d", years, months,  days);
+        Date dobs = Date.valueOf(dobStrings);
+        currentUser = new User(00001, "Walter", "White", "walt@white.com", "password", 0, 0, 6, "texas", dobs);
+        
         //Populate the state dropdown from State enum
         stateArray.add("Select your state");
         for (int i = 0; i <= 7; i++) {
@@ -64,27 +73,28 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         cbxYear.removeAllItems();
         int year = Calendar.getInstance().get(Calendar.YEAR);
         cbxYear.addItem("Year");
-        for(int i = 1900; i<= year; i++){
+        for(int i = year; i>= 1900; i--){
             cbxYear.addItem(i);
         }
+        populateFields();
         //populate table
-         db.getUser(userId);
-      try{
-          
-         String firstName = currentUser.getFirstName();
-         String lastName = currentUser.getLastName();
-         String email = currentUser.getEmail();
-         String password = currentUser.getPassword();
-         int sex = currentUser.getSex();
-         int state = currentUser.getState();
-         String town = currentUser.getTown();
-         Date dob = currentUser.getDob();
-        
-         
-         
-          }catch (Exception ex){
-              System.out.println("Error: "+ex.getMessage());
-    }
+//         db.getUser(userId);
+//      try{
+//          
+//         String firstName = currentUser.getFirstName();
+//         String lastName = currentUser.getLastName();
+//         String email = currentUser.getEmail();
+//         String password = currentUser.getPassword();
+//         int sex = currentUser.getSex();
+//         int state = currentUser.getState();
+//         String town = currentUser.getTown();
+//         Date dob = currentUser.getDob();
+//        
+//         
+//         
+//          }catch (Exception ex){
+//              System.out.println("Error: "+ex.getMessage());
+//    }
      }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -98,22 +108,21 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         buttonGroupSex = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
         lblDob = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtFirstName = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         btnSub = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
         btnHome = new javax.swing.JButton();
         lblFname = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtTown = new javax.swing.JTextField();
         lblHead = new javax.swing.JLabel();
         lblEmail = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
         lblTown = new javax.swing.JLabel();
         lblState = new javax.swing.JLabel();
         lblLname = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        txtSurname = new javax.swing.JTextField();
         lblPass = new javax.swing.JLabel();
-        txtPass = new javax.swing.JTextField();
         cbxState = new javax.swing.JComboBox();
         jPanel3 = new javax.swing.JPanel();
         cbxDay = new javax.swing.JComboBox();
@@ -121,11 +130,12 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         cbxYear = new javax.swing.JComboBox();
         jPanel4 = new javax.swing.JPanel();
         lblSex = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        radbtnMale = new javax.swing.JRadioButton();
+        radbtnOther = new javax.swing.JRadioButton();
+        radbtnFemale = new javax.swing.JRadioButton();
         lblConPass = new java.awt.Label();
-        txtConPass = new javax.swing.JTextField();
+        pwdPassword = new javax.swing.JPasswordField();
+        pwdConfirmPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(51, 51, 255));
@@ -142,8 +152,9 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 2, 6);
         jPanel2.add(lblDob, gridBagConstraints);
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField1.setPreferredSize(null);
+        txtFirstName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtFirstName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtFirstName.setPreferredSize(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -151,7 +162,7 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 2, 1);
-        jPanel2.add(jTextField1, gridBagConstraints);
+        jPanel2.add(txtFirstName, gridBagConstraints);
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
@@ -212,8 +223,9 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 2, 4);
         jPanel2.add(lblFname, gridBagConstraints);
 
-        jTextField4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField4.setPreferredSize(null);
+        txtTown.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtTown.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtTown.setPreferredSize(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 16;
@@ -221,7 +233,7 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 2, 1);
-        jPanel2.add(jTextField4, gridBagConstraints);
+        jPanel2.add(txtTown, gridBagConstraints);
 
         lblHead.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         lblHead.setText("Edit User");
@@ -244,8 +256,9 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 2, 6);
         jPanel2.add(lblEmail, gridBagConstraints);
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField2.setPreferredSize(null);
+        txtEmail.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtEmail.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtEmail.setPreferredSize(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
@@ -253,7 +266,7 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 2, 1);
-        jPanel2.add(jTextField2, gridBagConstraints);
+        jPanel2.add(txtEmail, gridBagConstraints);
 
         lblTown.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblTown.setText("Town");
@@ -282,14 +295,15 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 8);
         jPanel2.add(lblLname, gridBagConstraints);
 
-        jTextField6.setPreferredSize(null);
+        txtSurname.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtSurname.setPreferredSize(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 1);
-        jPanel2.add(jTextField6, gridBagConstraints);
+        jPanel2.add(txtSurname, gridBagConstraints);
 
         lblPass.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblPass.setText("Password");
@@ -299,15 +313,6 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
         jPanel2.add(lblPass, gridBagConstraints);
-
-        txtPass.setPreferredSize(null);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 1);
-        jPanel2.add(txtPass, gridBagConstraints);
 
         cbxState.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -386,30 +391,30 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 2, 6);
         jPanel4.add(lblSex, gridBagConstraints);
 
-        buttonGroupSex.add(jRadioButton1);
-        jRadioButton1.setText("Male");
+        buttonGroupSex.add(radbtnMale);
+        radbtnMale.setText("Male");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        jPanel4.add(jRadioButton1, gridBagConstraints);
+        jPanel4.add(radbtnMale, gridBagConstraints);
 
-        buttonGroupSex.add(jRadioButton3);
-        jRadioButton3.setSelected(true);
-        jRadioButton3.setText("Other");
+        buttonGroupSex.add(radbtnOther);
+        radbtnOther.setSelected(true);
+        radbtnOther.setText("Other");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        jPanel4.add(jRadioButton3, gridBagConstraints);
+        jPanel4.add(radbtnOther, gridBagConstraints);
 
-        buttonGroupSex.add(jRadioButton2);
-        jRadioButton2.setText("Female");
+        buttonGroupSex.add(radbtnFemale);
+        radbtnFemale.setText("Female");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        jPanel4.add(jRadioButton2, gridBagConstraints);
+        jPanel4.add(radbtnFemale, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -426,12 +431,22 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         gridBagConstraints.gridy = 9;
         gridBagConstraints.gridwidth = 2;
         jPanel2.add(lblConPass, gridBagConstraints);
+
+        pwdPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        pwdPassword.setText("jPasswordField1");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 8;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        jPanel2.add(txtConPass, gridBagConstraints);
+        jPanel2.add(pwdPassword, gridBagConstraints);
+
+        pwdConfirmPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        pwdConfirmPassword.setText("jPasswordField2");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanel2.add(pwdConfirmPassword, gridBagConstraints);
 
         getContentPane().add(jPanel2, new java.awt.GridBagConstraints());
 
@@ -444,8 +459,58 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
 
     private void btnSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubActionPerformed
         // TODO add your handling code here:
-        
-//db.updateUser(firstName, null, null, null, null, WIDTH, WIDTH, WIDTH, null, null)
+         boolean checkSuccess = true;//checkFields();
+        if (checkSuccess) {
+            int sex;
+            int accountType;
+
+            //Get variables from form elements
+            String fName = txtFirstName.getText();
+            String lName = txtSurname.getText();
+            String email = txtEmail.getText();
+            String password = pwdPassword.getText();
+//            String accountName = cbxAccountType.getSelectedItem().toString();
+            int state = cbxState.getSelectedIndex();
+            String town = txtTown.getText();
+            int day = Integer.parseInt(cbxDay.getSelectedItem().toString());
+            int month = cbxMonth.getSelectedIndex();
+            int year = Integer.parseInt(cbxYear.getSelectedItem().toString());
+            
+
+            if (radbtnMale.isSelected()) {
+                sex = 0;
+            } else if (radbtnFemale.isSelected()) {
+                sex = 1;
+            } else {
+                sex = 2;
+            }
+            
+//            if(accountName.equalsIgnoreCase("Standard User")){
+//                accountType = 0;
+//            }else{
+//                accountType = 1;
+//            }
+
+            //Create date value from individial day, month, year variables
+            String dobString = String.format("%d-%02d-%02d", year, month, day);
+            Date dob = Date.valueOf(dobString);
+
+//            User user = new User(fName, lName, email, password, accountType, sex, state, town, dob);
+//            boolean success = handler.updateUser(user);
+
+            boolean success = db.updateUser(id, fName, lName, email, password, 0, sex, state, town, dob);
+            
+            if (success) {
+                // links back to login screen
+                if (myhome == null) {
+                    myhome = new FormMain(currentUser);
+                }
+                myhome.setVisible(true);
+
+                this.setVisible(false);
+            }
+        }
+
     }//GEN-LAST:event_btnSubActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
@@ -526,9 +591,48 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
             }
         }
     }
+    
     private void setCbx(JComboBox cbx, ArrayList<String> array) {
         cbx.setModel(new DefaultComboBoxModel(array.toArray()));
     }
+    
+    private void populateFields(){
+        ResultSet user = db.getUser(currentUser.getUserId());
+        
+        try{
+            if(user.next()){
+                String firstName = user.getString("firstName");
+                String lastName = user.getString("lastName");
+                String email = user.getString("email");
+                String password = user.getString("password");
+                String town = user.getString("town");
+                int accountType = user.getInt("accountType");
+                int sex = user.getInt("sex");
+                int state = user.getInt("state");
+                String dob = user.getDate("dob").toString();
+                id = user.getInt("id");
+            
+                this.txtFirstName.setText(firstName);
+                this.txtSurname.setText(lastName);
+                this.txtEmail.setText(email);
+                this.pwdPassword.setText(password);
+                this.pwdConfirmPassword.setText(password);
+                this.txtTown.setText(town);
+                this.cbxState.setSelectedIndex(state);
+
+                if(sex == 0){
+                    this.radbtnMale.setSelected(true);
+                }else if(sex == 1){
+                    this.radbtnFemale.setSelected(true);
+                }else{
+                    this.radbtnOther.setSelected(true);
+                }
+            }             
+        }catch(SQLException ex){
+            System.out.println("Error: " + ex.getMessage());
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -578,13 +682,6 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField6;
     private java.awt.Label lblConPass;
     private javax.swing.JLabel lblDob;
     private javax.swing.JLabel lblEmail;
@@ -595,7 +692,14 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
     private javax.swing.JLabel lblSex;
     private javax.swing.JLabel lblState;
     private javax.swing.JLabel lblTown;
-    private javax.swing.JTextField txtConPass;
-    private javax.swing.JTextField txtPass;
+    private javax.swing.JPasswordField pwdConfirmPassword;
+    private javax.swing.JPasswordField pwdPassword;
+    private javax.swing.JRadioButton radbtnFemale;
+    private javax.swing.JRadioButton radbtnMale;
+    private javax.swing.JRadioButton radbtnOther;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtFirstName;
+    private javax.swing.JTextField txtSurname;
+    private javax.swing.JTextField txtTown;
     // End of variables declaration//GEN-END:variables
 }
