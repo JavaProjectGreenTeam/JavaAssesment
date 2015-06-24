@@ -15,12 +15,13 @@ public class FormOutput extends javax.swing.JFrame {
     FormMain myMain;
     /**
      * Creates new form FormOutput
+     * @param passUser
      */
-    public FormOutput(User user) {
+    public FormOutput(User passUser) {
         initComponents();
         this.setLocationRelativeTo(null);
         
-        
+        user = passUser;
         
     }
 
