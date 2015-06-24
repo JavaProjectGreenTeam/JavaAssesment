@@ -3,6 +3,7 @@ package assesment;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -25,7 +26,7 @@ public class FormMain extends javax.swing.JFrame {
     FromStdEditUser standardEdit;
     EditUser adminEdit;
     
-    ArrayList<String> comboDefaultArray = new ArrayList();
+    ArrayList<String> comboBoxDefaultArray = new ArrayList();
     ArrayList<String> combo1Array = new ArrayList<>();
     ArrayList<String> combo2Array = new ArrayList<>();
     ArrayList<String> combo3Array = new ArrayList<>();
@@ -47,38 +48,10 @@ public class FormMain extends javax.swing.JFrame {
         db = new DBInterface();
         user = passUser;
         defaultOption = "Select An Option...";
+        comboBoxDefaultArray.addAll(Arrays.asList(defaultOption));
         
-        //Set the current user label
         setCurrentUser();
-        
-        //Populate the first comboBox with values from industries database table
         populateDefaultComboBox();
-        
-        /*
-        comboDefaultArray.addAll(Arrays.asList("Select An Option..."));
-        
-        //combo1Array.addAll(Arrays.asList("Select An Option...", "Business", "Creaetive Industries", "Health", "Community Services"));
-        combo2Array.addAll(Arrays.asList("Select An Option...", "Accounting", "Business", "Human Resources", "Information Technology", "Management", "Tourism & Hospitality"));
-        combo3Array.addAll(Arrays.asList("Select An Option...", "Career Pathways", "Essential Employability Skills"));
-        combo4Array.addAll(Arrays.asList("Select An Option...", "Cert IV in IT", "Diploma of Software Development", "Diploma of Networking"));
-        combo5Array.addAll(Arrays.asList("Select An Option...", "Trainee Application Programmer", "Trainee Business/System's Analyst", "Web Developer", "Trainee Database Programmer", "Trainee Programming Tester", "Trainee Maintenance Programmer", "Articulation Pathway to Bachelor in IT"));
-        combo6Array.addAll(Arrays.asList("Select An Option...", "Job Description", "Statistical Data On Demand/Salary Range"));
-        
-        //cbx1.setModel(new javax.swing.DefaultComboBoxModel(combo1Array.toArray()));
-        cbx2.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
-        cbx3.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
-        cbx4.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
-        cbx5.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
-        cbx6.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
-        
-        cbx2.setEnabled(false);
-        cbx3.setEnabled(false);
-        cbx4.setEnabled(false);
-        cbx5.setEnabled(false);
-        cbx6.setEnabled(false);
-        
-        //btnSubmit.setEnabled(false);
-        */
     }
 
     /**
@@ -318,42 +291,40 @@ public class FormMain extends javax.swing.JFrame {
         ArrayList<String> textArray = new ArrayList<>();
         
         int selectionIndex = cbx1.getSelectedIndex();
-        ArrayList<ResultSet> resultArray = db.getFieldByParent(0, selectionIndex);
         
-        textArray.add(defaultOption);
-        
-        for (int i = 0; i < resultArray.size() - 1; i++) {
-            result = resultArray.get(i);
+        if (selectionIndex != 0) {
+            ArrayList<ResultSet> resultArray = db.getFieldByParent(0, selectionIndex);
 
-            try {
-                while (result.next()) {
-                    text = result.getString("text");
-                    textArray.add(text);
+            textArray.add(defaultOption);
+
+            for (int i = 0; i < resultArray.size() - 1; i++) {
+                result = resultArray.get(i);
+
+                try {
+                    while (result.next()) {
+                        text = result.getString("text");
+                        textArray.add(text);
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-            } catch (SQLException ex) {
-                Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
             }
+            setCbx(cbx2, textArray);
+            cbx2.setEnabled(true);
         }
-        
-        setCbx(cbx2, textArray);
-        
-        /* Old placeholder comboBox code
-        if (cbx1.getSelectedIndex() != 0) {
-            if (cbx1.getSelectedItem().toString().equals("Business")) {
-                cbx2.setEnabled(true);
-                cbx2.setModel(new javax.swing.DefaultComboBoxModel(combo2Array.toArray()));
-            
-            }
-        } else {
-            cbx2.setModel(new javax.swing.DefaultComboBoxModel(comboDefaultArray.toArray()));
-            cbx2.setSelectedIndex(0);
-            cbx2.setEnabled(false);
-        }*/
     }//GEN-LAST:event_cbx1ActionPerformed
 
     private void cbx2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx2ActionPerformed
+        String text;
+        ResultSet result;
+        ArrayList<String> textArray = new ArrayList<>();
         
+        int selectionIndex = cbx2.getSelectedIndex();
+        
+        if (selectionIndex != 0) {
+            
+        }
     }//GEN-LAST:event_cbx2ActionPerformed
 
     private void cbx3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx3ActionPerformed
@@ -412,8 +383,8 @@ public class FormMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbxActionsActionPerformed
 
+    //Set the current user label
     private void setCurrentUser() {
-        System.out.println("User: " + user);
         if (user != null) {
             String firstInitial = user.getFirstName().substring(0, 1).toUpperCase();
             String firstNameNoInitial = user.getFirstName().substring(1);
@@ -425,6 +396,7 @@ public class FormMain extends javax.swing.JFrame {
         }
     }
     
+    //Populate the first comboBox with values from industries database table
     private void populateDefaultComboBox() {
         ResultSet result;
         String text;
@@ -446,6 +418,13 @@ public class FormMain extends javax.swing.JFrame {
              }
         }
         setCbx(cbx1, textArray);
+        
+        //Set all other comboBoxes to be disabled
+        JComboBox[] comboBoxArray = new JComboBox[] {cbx2, cbx3, cbx4, cbx5, cbx6};
+        
+        for (int i = 0; i < comboBoxArray.length; i++) {
+            comboBoxArray[i].setEnabled(false);
+        }
     }
     
     private void setCbx(JComboBox cbx, ArrayList<String> array) {
