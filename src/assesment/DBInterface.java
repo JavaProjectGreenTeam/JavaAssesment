@@ -290,11 +290,29 @@ public class DBInterface {
             return resultArray;
             
         } catch (SQLException ex) {
-            System.out.println("Error: " + ex.getMessage());
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-     
+    
+    //Get output string from output database table
+    public ResultSet getOutput(int id) {
+        try {
+            String queryString = "SELECT * FROM output"
+                + " WHERE id = ?";
+        
+            PreparedStatement prepStatement = connection.prepareStatement(queryString);
+            prepStatement.setInt(1, id);
+            
+            result = prepStatement.executeQuery();
+            return result;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     //get user ID?
     public String getUserName(String email) {
         String name;
