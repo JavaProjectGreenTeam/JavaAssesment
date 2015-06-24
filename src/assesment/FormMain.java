@@ -340,7 +340,6 @@ public class FormMain extends javax.swing.JFrame {
         
         int selectionIndex = cbx2.getSelectedIndex();
         String selectedItem = cbx2.getSelectedItem().toString();
-        System.out.println("Selected Item: " + selectedItem);
         
         
         
@@ -350,11 +349,9 @@ public class FormMain extends javax.swing.JFrame {
             for (int i = 1; i < textArrayCbx2.size(); i++) {
                 if (textArrayCbx2.get(i).equals(selectedItem)) {
                     selectedId = idArrayCbx2.get(i - 1);
-                    System.out.println("Selected Item Id: " + selectedId);
                 }
             }
             
-            System.out.println("Getting entries with parent table 1 and id " + selectedId);
             ArrayList<ResultSet> resultArray = db.getFieldByParent(1, selectedId);
 
             idArrayCbx3.clear();
@@ -370,7 +367,6 @@ public class FormMain extends javax.swing.JFrame {
                         idArrayCbx3.add(id);
                         text = result.getString("text");
                         textArrayCbx3.add(text);
-                        System.out.println("Course: " + text);
                     }
 
                 } catch (SQLException ex) {
@@ -395,7 +391,6 @@ public class FormMain extends javax.swing.JFrame {
         
         int selectionIndex = cbx3.getSelectedIndex();
         String selectedItem = cbx3.getSelectedItem().toString();
-        System.out.println("Selected Item: " + selectedItem);
         
         
         
@@ -403,14 +398,11 @@ public class FormMain extends javax.swing.JFrame {
             selectedId = 0;
             
             for (int i = 1; i < textArrayCbx3.size(); i++) {
-                System.out.println("textArrayCbx3: " + textArrayCbx3.get(i));
                 if (textArrayCbx3.get(i).equals(selectedItem)) {
                     selectedId = idArrayCbx3.get(i - 1);
-                    System.out.println("Selected Item Id: " + selectedId);
                 }
             }
             
-            System.out.println("Getting entries with parent table 2 and id " + selectedId);
             ArrayList<ResultSet> resultArray = db.getFieldByParent(2, selectedId);
 
             idArrayCbx4.clear();
@@ -426,7 +418,6 @@ public class FormMain extends javax.swing.JFrame {
                         idArrayCbx4.add(id);
                         text = result.getString("text");
                         textArrayCbx4.add(text);
-                        System.out.println("Course: " + text);
                     }
 
                 } catch (SQLException ex) {
@@ -456,11 +447,23 @@ public class FormMain extends javax.swing.JFrame {
     }//GEN-LAST:event_cbx6ActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-        if (formOutput == null) {
-            formOutput = new FormOutput(user);
+        String selectedItem = cbx4.getSelectedItem().toString();
+        int selectionIndex = cbx4.getSelectedIndex();
+        int selectedId = 0;
+        
+        if (selectionIndex != 0) {
+            for (int i = 1; i < textArrayCbx4.size(); i++) {
+                if (textArrayCbx4.get(i).equals(selectedItem)) {
+                    selectedId = idArrayCbx4.get(i - 1);
+                }
+            }
+        
+            if (formOutput == null) {
+                formOutput = new FormOutput(user);
+            }
+            formOutput.setVisible(true);
+            this.setVisible(false);
         }
-        formOutput.setVisible(true);
-        this.setVisible(false);
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void lblUserInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_lblUserInputMethodTextChanged
