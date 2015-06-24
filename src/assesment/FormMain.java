@@ -326,6 +326,7 @@ public class FormMain extends javax.swing.JFrame {
             cbx2.setEnabled(true);
         } else {
             setCbx(cbx2, comboBoxDefaultArray);
+            cbx2.setSelectedIndex(0);
             cbx2.setEnabled(false);
         }
     }//GEN-LAST:event_cbx1ActionPerformed
@@ -378,6 +379,7 @@ public class FormMain extends javax.swing.JFrame {
             cbx3.setEnabled(true);
         } else {
             setCbx(cbx3, comboBoxDefaultArray);
+            cbx3.setSelectedIndex(0);
             cbx3.setEnabled(false);
         }
     }//GEN-LAST:event_cbx2ActionPerformed
