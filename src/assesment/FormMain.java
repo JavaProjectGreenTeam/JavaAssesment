@@ -3,7 +3,6 @@ package assesment;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -27,12 +26,19 @@ public class FormMain extends javax.swing.JFrame {
     EditUser adminEdit;
     
     ArrayList<String> comboBoxDefaultArray = new ArrayList();
-    ArrayList<String> combo1Array = new ArrayList<>();
-    ArrayList<String> combo2Array = new ArrayList<>();
-    ArrayList<String> combo3Array = new ArrayList<>();
-    ArrayList<String> combo4Array = new ArrayList<>();
-    ArrayList<String> combo5Array = new ArrayList<>();
-    ArrayList<String> combo6Array = new ArrayList<>();
+    ArrayList<Integer> idArrayCbx1 = new ArrayList<>();
+    ArrayList<Integer> idArrayCbx2 = new ArrayList<>();
+    ArrayList<Integer> idArrayCbx3 = new ArrayList<>();
+    ArrayList<Integer> idArrayCbx4 = new ArrayList<>();
+    ArrayList<Integer> idArrayCbx5 = new ArrayList<>();
+    ArrayList<Integer> idArrayCbx6 = new ArrayList<>();
+    
+    ArrayList<String> textArrayCbx1 = new ArrayList<>();
+    ArrayList<String> textArrayCbx2 = new ArrayList<>();
+    ArrayList<String> textArrayCbx3 = new ArrayList<>();
+    ArrayList<String> textArrayCbx4 = new ArrayList<>();
+    ArrayList<String> textArrayCbx5 = new ArrayList<>();
+    ArrayList<String> textArrayCbx6 = new ArrayList<>();
     
     /**
      * Creates new form FormMain
@@ -48,7 +54,7 @@ public class FormMain extends javax.swing.JFrame {
         db = new DBInterface();
         user = passUser;
         defaultOption = "Select An Option...";
-        comboBoxDefaultArray.addAll(Arrays.asList(defaultOption));
+        comboBoxDefaultArray.add("");
         
         setCurrentUser();
         populateDefaultComboBox();
@@ -286,44 +292,93 @@ public class FormMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void cbx1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx1ActionPerformed
+        int selectedId;
+        int id;
         String text;
         ResultSet result;
-        ArrayList<String> textArray = new ArrayList<>();
         
         int selectionIndex = cbx1.getSelectedIndex();
         
         if (selectionIndex != 0) {
             ArrayList<ResultSet> resultArray = db.getFieldByParent(0, selectionIndex);
 
-            textArray.add(defaultOption);
+            idArrayCbx2.clear();
+            textArrayCbx2.clear();
+            textArrayCbx2.add(defaultOption);
 
             for (int i = 0; i < resultArray.size() - 1; i++) {
                 result = resultArray.get(i);
 
                 try {
                     while (result.next()) {
+                        id = result.getInt("id");
+                        idArrayCbx2.add(id);
                         text = result.getString("text");
-                        textArray.add(text);
+                        textArrayCbx2.add(text);
                     }
 
                 } catch (SQLException ex) {
                     Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            setCbx(cbx2, textArray);
+            
+            setCbx(cbx2, textArrayCbx2);
             cbx2.setEnabled(true);
+        } else {
+            setCbx(cbx2, comboBoxDefaultArray);
+            cbx2.setEnabled(false);
         }
     }//GEN-LAST:event_cbx1ActionPerformed
 
     private void cbx2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx2ActionPerformed
+        int selectedId;
+        int id;
         String text;
         ResultSet result;
-        ArrayList<String> textArray = new ArrayList<>();
         
         int selectionIndex = cbx2.getSelectedIndex();
+        String selectedItem = cbx2.getSelectedItem().toString();
+        System.out.println("Selected Item: " + selectedItem);
+        
+        
         
         if (selectionIndex != 0) {
+            selectedId = 0;
             
+            for (int i = 1; i < textArrayCbx2.size() - 1; i++) {
+                if (textArrayCbx2.get(i).equals(selectedItem)) {
+                    selectedId = idArrayCbx2.get(i - 1);
+                    System.out.println("Selected Item Id: " + selectedId);
+                }
+            }
+            
+            ArrayList<ResultSet> resultArray = db.getFieldByParent(1, selectedId);
+
+            idArrayCbx3.clear();
+            textArrayCbx3.clear();
+            textArrayCbx3.add(defaultOption);
+
+            for (int i = 0; i < resultArray.size() - 1; i++) {
+                result = resultArray.get(i);
+
+                try {
+                    while (result.next()) {
+                        id = result.getInt("id");
+                        idArrayCbx3.add(id);
+                        text = result.getString("text");
+                        textArrayCbx3.add(text);
+                        System.out.println("Course: " + text);
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            setCbx(cbx3, textArrayCbx3);
+            cbx3.setEnabled(true);
+        } else {
+            setCbx(cbx3, comboBoxDefaultArray);
+            cbx3.setEnabled(false);
         }
     }//GEN-LAST:event_cbx2ActionPerformed
 
@@ -398,26 +453,28 @@ public class FormMain extends javax.swing.JFrame {
     
     //Populate the first comboBox with values from industries database table
     private void populateDefaultComboBox() {
+        int id;
         ResultSet result;
         String text;
         
-        ArrayList<String> textArray = new ArrayList<>();
-        
-        textArray.add(defaultOption);
+        textArrayCbx1.clear();
+        textArrayCbx1.add(defaultOption);
         
         for (int i = 1; i <= 4; i++) {
              result = db.getField(0, i);
              
              try {
                  while (result.next()) {
+                    id = result.getInt("id");
+                    idArrayCbx1.add(id);
                     text = result.getString("text");
-                    textArray.add(text); 
+                    textArrayCbx1.add(text); 
                  } 
              } catch (SQLException ex) {
                  Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
              }
         }
-        setCbx(cbx1, textArray);
+        setCbx(cbx1, textArrayCbx1);
         
         //Set all other comboBoxes to be disabled
         JComboBox[] comboBoxArray = new JComboBox[] {cbx2, cbx3, cbx4, cbx5, cbx6};
