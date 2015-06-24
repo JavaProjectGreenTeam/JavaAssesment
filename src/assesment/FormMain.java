@@ -306,7 +306,7 @@ public class FormMain extends javax.swing.JFrame {
             textArrayCbx2.clear();
             textArrayCbx2.add(defaultOption);
 
-            for (int i = 0; i < resultArray.size() - 1; i++) {
+            for (int i = 0; i < resultArray.size(); i++) {
                 result = resultArray.get(i);
 
                 try {
@@ -323,6 +323,7 @@ public class FormMain extends javax.swing.JFrame {
             }
             
             setCbx(cbx2, textArrayCbx2);
+            cbx2.setSelectedIndex(0);
             cbx2.setEnabled(true);
         } else {
             setCbx(cbx2, comboBoxDefaultArray);
@@ -346,20 +347,21 @@ public class FormMain extends javax.swing.JFrame {
         if (selectionIndex != 0) {
             selectedId = 0;
             
-            for (int i = 1; i < textArrayCbx2.size() - 1; i++) {
+            for (int i = 1; i < textArrayCbx2.size(); i++) {
                 if (textArrayCbx2.get(i).equals(selectedItem)) {
                     selectedId = idArrayCbx2.get(i - 1);
                     System.out.println("Selected Item Id: " + selectedId);
                 }
             }
             
+            System.out.println("Getting entries with parent table 1 and id " + selectedId);
             ArrayList<ResultSet> resultArray = db.getFieldByParent(1, selectedId);
 
             idArrayCbx3.clear();
             textArrayCbx3.clear();
             textArrayCbx3.add(defaultOption);
 
-            for (int i = 0; i < resultArray.size() - 1; i++) {
+            for (int i = 0; i < resultArray.size(); i++) {
                 result = resultArray.get(i);
 
                 try {
@@ -376,6 +378,7 @@ public class FormMain extends javax.swing.JFrame {
                 }
             }
             setCbx(cbx3, textArrayCbx3);
+            cbx3.setSelectedIndex(0);
             cbx3.setEnabled(true);
         } else {
             setCbx(cbx3, comboBoxDefaultArray);
@@ -385,7 +388,59 @@ public class FormMain extends javax.swing.JFrame {
     }//GEN-LAST:event_cbx2ActionPerformed
 
     private void cbx3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx3ActionPerformed
+        int selectedId;
+        int id;
+        String text;
+        ResultSet result;
         
+        int selectionIndex = cbx3.getSelectedIndex();
+        String selectedItem = cbx3.getSelectedItem().toString();
+        System.out.println("Selected Item: " + selectedItem);
+        
+        
+        
+        if (selectionIndex != 0) {
+            selectedId = 0;
+            
+            for (int i = 1; i < textArrayCbx3.size(); i++) {
+                System.out.println("textArrayCbx3: " + textArrayCbx3.get(i));
+                if (textArrayCbx3.get(i).equals(selectedItem)) {
+                    selectedId = idArrayCbx3.get(i - 1);
+                    System.out.println("Selected Item Id: " + selectedId);
+                }
+            }
+            
+            System.out.println("Getting entries with parent table 2 and id " + selectedId);
+            ArrayList<ResultSet> resultArray = db.getFieldByParent(2, selectedId);
+
+            idArrayCbx4.clear();
+            textArrayCbx4.clear();
+            textArrayCbx4.add(defaultOption);
+
+            for (int i = 0; i < resultArray.size(); i++) {
+                result = resultArray.get(i);
+
+                try {
+                    while (result.next()) {
+                        id = result.getInt("id");
+                        idArrayCbx4.add(id);
+                        text = result.getString("text");
+                        textArrayCbx4.add(text);
+                        System.out.println("Course: " + text);
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            setCbx(cbx4, textArrayCbx4);
+            cbx4.setSelectedIndex(0);
+            cbx4.setEnabled(true);
+        } else {
+            setCbx(cbx4, comboBoxDefaultArray);
+            cbx4.setSelectedIndex(0);
+            cbx4.setEnabled(false);
+        }
     }//GEN-LAST:event_cbx3ActionPerformed
 
     private void cbx4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx4ActionPerformed
