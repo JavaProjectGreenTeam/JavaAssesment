@@ -21,7 +21,6 @@ public class DBInterface {
     private Connection connection;
     private Statement statement;
     private ResultSet result;
-    private ResultSet resultCopy;
     
     
     //Database Connection Method
@@ -82,8 +81,8 @@ public class DBInterface {
             result = result = statement.executeQuery(queryString);
             return result;
             
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
+        } catch (SQLException ex) {
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -291,14 +290,32 @@ public class DBInterface {
             return resultArray;
             
         } catch (SQLException ex) {
-            System.out.println("Error: " + ex.getMessage());
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-     
+    
+    //Get output string from output database table
+    public ResultSet getOutput(int id) {
+        try {
+            String queryString = "SELECT * FROM output"
+                + " WHERE id = ?";
+        
+            PreparedStatement prepStatement = connection.prepareStatement(queryString);
+            prepStatement.setInt(1, id);
+            
+            result = prepStatement.executeQuery();
+            return result;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     //get user ID?
     public String getUserName(String email) {
-        String Name = "Not Set";
+        String name;
         try {
             String queryString = "SELECT firstName FROM user"
                     + " WHERE email = " + email;
@@ -309,8 +326,8 @@ public class DBInterface {
             
             if(rs.next())
             {
-                Name = rs.getString("firstName");
-                return Name;
+                name = rs.getString("firstName");
+                return name;
             }
             
 //            PreparedStatement prepStatement = connection.prepareStatement(queryString);
