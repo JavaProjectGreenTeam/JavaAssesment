@@ -348,35 +348,6 @@ public class FormMain extends javax.swing.JFrame {
             textArrayCbx3.clear();
             textArrayCbx3.addAll(Arrays.asList(defaultOption, "Career Pathways", "Skills In Demand", "Essential Employability Skills"));
             
-//            selectedId = 0;
-//            
-//            for (int i = 1; i < textArrayCbx2.size(); i++) {
-//                if (textArrayCbx2.get(i).equals(selectedItem)) {
-//                    selectedId = idArrayCbx2.get(i - 1);
-//                }
-//            }
-//            
-//            ArrayList<ResultSet> resultArray = db.getFieldByParent(1, selectedId);
-//
-//            idArrayCbx3.clear();
-//            textArrayCbx3.clear();
-//            textArrayCbx3.add(defaultOption);
-//
-//            for (int i = 0; i < resultArray.size(); i++) {
-//                result = resultArray.get(i);
-//
-//                try {
-//                    while (result.next()) {
-//                        id = result.getInt("id");
-//                        idArrayCbx3.add(id);
-//                        text = result.getString("text");
-//                        textArrayCbx3.add(text);
-//                    }
-//
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
             setCbx(cbx3, textArrayCbx3);
             cbx3.setSelectedIndex(0);
             cbx3.setEnabled(true);
@@ -512,14 +483,28 @@ public class FormMain extends javax.swing.JFrame {
     }//GEN-LAST:event_cbx6ActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+        ResultSet result;
+        String history;
+        
         int selectionIndex = cbx6.getSelectedIndex();
         String heading = cbx5.getSelectedItem().toString();
         String subHeading = cbx6.getSelectedItem().toString();
-        ResultSet result;
         
         if (selectionIndex != 0) {
             result = db.getOutput(selectionIndex);
         
+            String[] cbxStringArray = new String[] {
+                cbx1.getSelectedItem().toString(), 
+                cbx2.getSelectedItem().toString(), 
+                cbx3.getSelectedItem().toString(), 
+                cbx4.getSelectedItem().toString(), 
+                cbx5.getSelectedItem().toString(), 
+                cbx6.getSelectedItem().toString()
+            };
+            history = String.format("%s-%s-%s-%s-%s-%s", cbxStringArray[0], cbxStringArray[1], cbxStringArray[2], cbxStringArray[3], cbxStringArray[4], cbxStringArray[5]);
+            
+            db.storeHistory(user.getUserId(), history);
+            
             if (formOutput == null) {
                 formOutput = new FormOutput(user, heading, subHeading);
             }
