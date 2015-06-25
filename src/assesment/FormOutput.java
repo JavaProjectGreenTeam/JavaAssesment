@@ -6,6 +6,11 @@
 //Form output done by Nick
 package assesment;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author 3100298414
@@ -16,13 +21,21 @@ public class FormOutput extends javax.swing.JFrame {
     /**
      * Creates new form FormOutput
      * @param passUser
+     * @param heading
+     * @param subHeading
      */
-    public FormOutput(User passUser) {
+    public FormOutput(User passUser, String heading, String subHeading) {
         initComponents();
         this.setLocationRelativeTo(null);
         
         user = passUser;
         
+        txtHeading.setText(heading);
+        txtSubHeading.setText("- " + subHeading + " -");
+        
+        DBInterface db = new DBInterface();
+        ResultSet result = db.getOutput(2);
+        displayOutput(result);
     }
 
     /**
@@ -35,9 +48,9 @@ public class FormOutput extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtMainOutput = new javax.swing.JTextArea();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        txtOutput = new javax.swing.JTextArea();
+        txtHeading = new javax.swing.JLabel();
+        txtSubHeading = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         btnReturn = new javax.swing.JButton();
 
@@ -47,31 +60,40 @@ public class FormOutput extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        txtMainOutput.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        txtMainOutput.setPreferredSize(new java.awt.Dimension(500, 400));
-        jScrollPane1.setViewportView(txtMainOutput);
+        jScrollPane1.setAutoscrolls(true);
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(0, 0));
+        jScrollPane1.setName(""); // NOI18N
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(0, 0));
+
+        txtOutput.setEditable(false);
+        txtOutput.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtOutput.setLineWrap(true);
+        txtOutput.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(txtOutput);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipadx = 600;
+        gridBagConstraints.ipady = 600;
         jPanel1.add(jScrollPane1, gridBagConstraints);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setText("-Job Description-");
-        jLabel2.setToolTipText("");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
-        jPanel1.add(jLabel2, gridBagConstraints);
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setText("Trainee Application Programmer");
+        txtHeading.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        txtHeading.setText("Trainee Application Programmer");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
-        jPanel1.add(jLabel1, gridBagConstraints);
+        jPanel1.add(txtHeading, gridBagConstraints);
+
+        txtSubHeading.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtSubHeading.setText("-Job Description-");
+        txtSubHeading.setToolTipText("");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
+        jPanel1.add(txtSubHeading, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -102,15 +124,27 @@ public class FormOutput extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
-        // TODO add your handling code here:
         if (myMain == null) {
             myMain = new FormMain(user);
-            
         }
         myMain.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnReturnActionPerformed
 
+    public void displayOutput(ResultSet result) {
+        String output = "";
+        
+        try {
+            while (result.next()) {
+                output = result.getString("text");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        txtOutput.setText(output);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -141,18 +175,18 @@ public class FormOutput extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormOutput(null).setVisible(true);
+                new FormOutput(null, null, null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnReturn;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextArea txtMainOutput;
+    private javax.swing.JLabel txtHeading;
+    private javax.swing.JTextArea txtOutput;
+    private javax.swing.JLabel txtSubHeading;
     // End of variables declaration//GEN-END:variables
 }
