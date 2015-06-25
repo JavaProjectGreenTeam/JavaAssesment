@@ -609,8 +609,20 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
                 int accountType = user.getInt("accountType");
                 int sex = user.getInt("sex");
                 int state = user.getInt("state");
-                String dob = user.getDate("dob").toString();
+                
                 id = user.getInt("id");
+                String dob = user.getDate("dob").toString();
+                String year = dob.substring(0, 4);
+                String month = dob.substring(5, 7);
+                String day = dob.substring(8, 10);
+                
+                if (Integer.parseInt(month) < 10) {
+                    month = dob.substring(6, 7);
+                }
+                
+                if (Integer.parseInt(day) < 10) {
+                    day = dob.substring(9, 10);
+                }
             
                 this.txtFirstName.setText(firstName);
                 this.txtSurname.setText(lastName);
@@ -619,6 +631,9 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
                 this.pwdConfirmPassword.setText(password);
                 this.txtTown.setText(town);
                 this.cbxState.setSelectedIndex(state);
+                this.cbxDay.setSelectedIndex(Integer.parseInt(day));
+                this.cbxMonth.setSelectedIndex(Integer.parseInt(month));
+                this.cbxYear.setSelectedItem(Integer.parseInt(year));
 
                 if(sex == 0){
                     this.radbtnMale.setSelected(true);
