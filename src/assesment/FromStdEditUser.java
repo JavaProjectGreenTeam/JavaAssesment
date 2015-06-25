@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 
 
@@ -25,6 +28,7 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
     ResultSet user;
     int id;
     DBInterface db = new DBInterface();
+    Validator validator;
     ArrayList<String> stateArray = new ArrayList<>();
     ArrayList<String> monthArray = new ArrayList<>();
     ArrayList<String> dayArray = new ArrayList<>();
@@ -42,6 +46,7 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         currentUser = passUser;
+        validator = new Validator();
 //        int years = 2000;
 //        int months = 3;
 //        int days = 10;
@@ -433,7 +438,6 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         jPanel2.add(lblConPass, gridBagConstraints);
 
         pwdPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        pwdPassword.setText("jPasswordField1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 8;
@@ -441,7 +445,6 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         jPanel2.add(pwdPassword, gridBagConstraints);
 
         pwdConfirmPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        pwdConfirmPassword.setText("jPasswordField2");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 10;
@@ -459,7 +462,7 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
 
     private void btnSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubActionPerformed
         // TODO add your handling code here:
-         boolean checkSuccess = true;//checkFields();
+         boolean checkSuccess = checkFields();
         if (checkSuccess) {
             int sex;
             int accountType;
@@ -505,9 +508,10 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
                 if (myhome == null) {
                     myhome = new FormMain(currentUser);
                 }
+                
                 myhome.setVisible(true);
-
                 this.setVisible(false);
+                JOptionPane.showMessageDialog(null, "Account details successfully updated");
             }
         }
 
@@ -646,6 +650,169 @@ public class FromStdEditUser   extends  javax.swing.JFrame {
         }catch(SQLException ex){
             System.out.println("Error: " + ex.getMessage());
         }
+    }
+    
+    private boolean checkFields() {
+        boolean triggered;
+        String error;
+        
+        JTextField[] textFieldArray = new JTextField[] {null, txtFirstName, txtSurname, txtEmail, txtTown};
+        JPasswordField[] passwordFieldArray = new JPasswordField[] {null, pwdPassword, pwdConfirmPassword};
+        JComboBox[] comboBoxArray = new JComboBox[] {null, cbxState, cbxDay, cbxMonth, cbxYear};
+        
+        int errorTrigger = 0;
+        int errorPoint = 0;
+        
+        triggered = false;
+        
+        //Check all text fields are filled
+        System.out.println("Checking text fields");
+        for (int i = 1; i < textFieldArray.length; i++) {
+            errorPoint++;
+            
+            if (textFieldArray[i].getText().equals("") && !triggered) {
+                errorTrigger = errorPoint;
+                triggered = true;
+            }
+        }
+        
+        //Check passwords are entered
+        if (!triggered) {
+            System.out.println("Checking password fields");
+            for (int i = 1; i < passwordFieldArray.length; i++) {
+                errorPoint++;
+                
+                if (passwordFieldArray[i].getText().equals("") && !triggered) {
+                    errorTrigger = errorPoint;
+                    triggered = true;
+                }
+            }
+        }
+        
+        //Check a sex is selected
+        if (!triggered) {
+            System.out.println("Checking sex selection");
+            errorPoint++;
+            
+            if (!radbtnMale.isSelected() && !radbtnFemale.isSelected() && !radbtnOther.isSelected()) {
+                errorTrigger = errorPoint;
+                triggered = true;
+            }
+        }
+        
+        //Check the combo box values are not the default
+        if (!triggered) {
+            System.out.println("Checking combo boxes");
+            for (int i = 1; i < comboBoxArray.length; i++) {
+                errorPoint++;
+                
+                if (comboBoxArray[i].getSelectedIndex() == 0 && !triggered) {
+                    errorTrigger = errorPoint;
+                    triggered = true;
+                }
+            }
+        }
+        
+        //Check that email is valid
+        if (!triggered) {
+            System.out.println("Checking email validation");
+            errorPoint++;
+            String email = txtEmail.getText();
+            
+            if (!validator.validateEmail(email)) {
+                errorTrigger = errorPoint;
+                triggered = true;
+            }
+        }
+        
+        //Check that the passwords match
+        if (!triggered) {
+            System.out.println("Checking passwords match");
+            errorPoint++;
+            String pass1 = pwdPassword.getText();
+            String pass2 = pwdConfirmPassword.getText();
+            
+            if (!validator.matchPassword(pass1, pass2)) {
+                errorTrigger = errorPoint;
+                triggered = true;
+            }
+        }
+        
+        System.out.println("errorPoint = " + errorTrigger + "\n"
+        + "triggered = " + triggered);
+        
+        if (triggered) {
+            switch(errorTrigger) {
+                case 1:
+                    //First Name is required
+                    JOptionPane.showMessageDialog(null, "First Name is a required field");
+                    break;
+                    
+                case 2:
+                    //Surname is required
+                    JOptionPane.showMessageDialog(null, "Surname is a required field");
+                    break;
+                    
+                case 3:
+                    //Email is required
+                    JOptionPane.showMessageDialog(null, "Email is a required field");
+                    break;
+                    
+                case 4:
+                    //Town is required
+                    JOptionPane.showMessageDialog(null, "Town is a required field");
+                    break;
+                    
+                case 5:
+                    //Password is required
+                    JOptionPane.showMessageDialog(null, "Password is a required field");
+                    break;
+                    
+                case 6:
+                    //Confirm Password is required
+                    JOptionPane.showMessageDialog(null, "Confirm Password is a required field");
+                    break;
+                    
+                case 7:
+                    //Gender selection is required
+                    JOptionPane.showMessageDialog(null, "Gender is a required field");
+                    break;
+                    
+                case 8:
+                    //State is required
+                    JOptionPane.showMessageDialog(null, "State is a required field");
+                    break;
+                    
+                case 9:
+                    //Day is required
+                    JOptionPane.showMessageDialog(null, "Day is a required field");
+                    break;
+                    
+                case 10:
+                    //Month is required
+                    JOptionPane.showMessageDialog(null, "Month is a required field");
+                    break;
+                    
+                case 11:
+                    //Year is required
+                    JOptionPane.showMessageDialog(null, "Year is a required field");
+                    break;
+                    
+                case 12:
+                    //Email isn't valid (must contain "@" and ".")
+                    JOptionPane.showMessageDialog(null, "Email is not valid, must follow x@x.x");
+                    break;
+                    
+                case 13:
+                    //Passwords don't match
+                    JOptionPane.showMessageDialog(null, "Passwords do not match");
+                    break;
+            }
+            
+            return false;
+        }
+        
+        return true;
     }
     
     /**
