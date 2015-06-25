@@ -162,7 +162,6 @@ public class EditUser extends javax.swing.JFrame {
         pnlEditUser.add(lblEmail, gridBagConstraints);
 
         txtEmail.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtEmail.setText("someone@example.com");
         txtEmail.setMaximumSize(new java.awt.Dimension(2147483647, 27));
         txtEmail.setMinimumSize(new java.awt.Dimension(170, 27));
         txtEmail.setPreferredSize(new java.awt.Dimension(170, 27));
