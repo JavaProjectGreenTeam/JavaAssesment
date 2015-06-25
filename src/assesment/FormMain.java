@@ -3,6 +3,7 @@ package assesment;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -344,35 +345,38 @@ public class FormMain extends javax.swing.JFrame {
         
         
         if (selectionIndex != 0) {
-            selectedId = 0;
-            
-            for (int i = 1; i < textArrayCbx2.size(); i++) {
-                if (textArrayCbx2.get(i).equals(selectedItem)) {
-                    selectedId = idArrayCbx2.get(i - 1);
-                }
-            }
-            
-            ArrayList<ResultSet> resultArray = db.getFieldByParent(1, selectedId);
-
-            idArrayCbx3.clear();
             textArrayCbx3.clear();
-            textArrayCbx3.add(defaultOption);
-
-            for (int i = 0; i < resultArray.size(); i++) {
-                result = resultArray.get(i);
-
-                try {
-                    while (result.next()) {
-                        id = result.getInt("id");
-                        idArrayCbx3.add(id);
-                        text = result.getString("text");
-                        textArrayCbx3.add(text);
-                    }
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            textArrayCbx3.addAll(Arrays.asList(defaultOption, "Career Pathways", "Skills In Demand", "Essential Employability Skills"));
+            
+//            selectedId = 0;
+//            
+//            for (int i = 1; i < textArrayCbx2.size(); i++) {
+//                if (textArrayCbx2.get(i).equals(selectedItem)) {
+//                    selectedId = idArrayCbx2.get(i - 1);
+//                }
+//            }
+//            
+//            ArrayList<ResultSet> resultArray = db.getFieldByParent(1, selectedId);
+//
+//            idArrayCbx3.clear();
+//            textArrayCbx3.clear();
+//            textArrayCbx3.add(defaultOption);
+//
+//            for (int i = 0; i < resultArray.size(); i++) {
+//                result = resultArray.get(i);
+//
+//                try {
+//                    while (result.next()) {
+//                        id = result.getInt("id");
+//                        idArrayCbx3.add(id);
+//                        text = result.getString("text");
+//                        textArrayCbx3.add(text);
+//                    }
+//
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
             setCbx(cbx3, textArrayCbx3);
             cbx3.setSelectedIndex(0);
             cbx3.setEnabled(true);
@@ -390,43 +394,43 @@ public class FormMain extends javax.swing.JFrame {
         ResultSet result;
         
         int selectionIndex = cbx3.getSelectedIndex();
-        String selectedItem = cbx3.getSelectedItem().toString();
-        
-        
+        String selectedItem = cbx2.getSelectedItem().toString();
         
         if (selectionIndex != 0) {
-            selectedId = 0;
+            if (selectionIndex == 1) {
+                selectedId = 0;
             
-            for (int i = 1; i < textArrayCbx3.size(); i++) {
-                if (textArrayCbx3.get(i).equals(selectedItem)) {
-                    selectedId = idArrayCbx3.get(i - 1);
-                }
-            }
-            
-            ArrayList<ResultSet> resultArray = db.getFieldByParent(2, selectedId);
-
-            idArrayCbx4.clear();
-            textArrayCbx4.clear();
-            textArrayCbx4.add(defaultOption);
-
-            for (int i = 0; i < resultArray.size(); i++) {
-                result = resultArray.get(i);
-
-                try {
-                    while (result.next()) {
-                        id = result.getInt("id");
-                        idArrayCbx4.add(id);
-                        text = result.getString("text");
-                        textArrayCbx4.add(text);
+                for (int i = 1; i < textArrayCbx2.size(); i++) {
+                    if (textArrayCbx2.get(i).equals(selectedItem)) {
+                        selectedId = idArrayCbx2.get(i - 1);
                     }
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
+                ArrayList<ResultSet> resultArray = db.getFieldByParent(1, selectedId);
+
+                idArrayCbx4.clear();
+                textArrayCbx4.clear();
+                textArrayCbx4.add(defaultOption);
+
+                for (int i = 0; i < resultArray.size(); i++) {
+                    result = resultArray.get(i);
+
+                    try {
+                        while (result.next()) {
+                            id = result.getInt("id");
+                            idArrayCbx4.add(id);
+                            text = result.getString("text");
+                            textArrayCbx4.add(text);
+                        }
+
+                    } catch (SQLException ex) {
+                        Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                setCbx(cbx4, textArrayCbx4);
+                cbx4.setSelectedIndex(0);
+                cbx4.setEnabled(true);
             }
-            setCbx(cbx4, textArrayCbx4);
-            cbx4.setSelectedIndex(0);
-            cbx4.setEnabled(true);
         } else {
             setCbx(cbx4, comboBoxDefaultArray);
             cbx4.setSelectedIndex(0);
@@ -435,10 +439,71 @@ public class FormMain extends javax.swing.JFrame {
     }//GEN-LAST:event_cbx3ActionPerformed
 
     private void cbx4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx4ActionPerformed
+        int selectedId;
+        int id;
+        String text;
+        ResultSet result;
         
+        int selectionIndex = cbx4.getSelectedIndex();
+        String selectedItem = cbx4.getSelectedItem().toString();
+        
+        
+        
+        if (selectionIndex != 0) {
+            selectedId = 0;
+            
+            for (int i = 1; i < textArrayCbx4.size(); i++) {
+                if (textArrayCbx4.get(i).equals(selectedItem)) {
+                    selectedId = idArrayCbx4.get(i - 1);
+                }
+            }
+            
+            ArrayList<ResultSet> resultArray = db.getFieldByParent(2, selectedId);
+
+            idArrayCbx5.clear();
+            textArrayCbx5.clear();
+            textArrayCbx5.add(defaultOption);
+
+            for (int i = 0; i < resultArray.size(); i++) {
+                result = resultArray.get(i);
+
+                try {
+                    while (result.next()) {
+                        id = result.getInt("id");
+                        idArrayCbx5.add(id);
+                        text = result.getString("text");
+                        textArrayCbx5.add(text);
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(DBInterface.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            setCbx(cbx5, textArrayCbx5);
+            cbx5.setSelectedIndex(0);
+            cbx5.setEnabled(true);
+        } else {
+            setCbx(cbx5, comboBoxDefaultArray);
+            cbx5.setSelectedIndex(0);
+            cbx5.setEnabled(false);
+        }
     }//GEN-LAST:event_cbx4ActionPerformed
 
     private void cbx5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx5ActionPerformed
+        int selectionIndex = cbx5.getSelectedIndex();
+        
+        if (selectionIndex != 0) {
+            textArrayCbx6.clear();
+            textArrayCbx6.addAll(Arrays.asList(defaultOption, "Job Description", "Statistical data on demand / salary range"));
+            
+            setCbx(cbx6, textArrayCbx6);
+            cbx6.setSelectedIndex(0);
+            cbx6.setEnabled(true);
+        } else {
+            setCbx(cbx6, comboBoxDefaultArray);
+            cbx6.setSelectedIndex(0);
+            cbx6.setEnabled(false);
+        }
         
     }//GEN-LAST:event_cbx5ActionPerformed
 
@@ -447,21 +512,19 @@ public class FormMain extends javax.swing.JFrame {
     }//GEN-LAST:event_cbx6ActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-        String selectedItem = cbx4.getSelectedItem().toString();
-        int selectionIndex = cbx4.getSelectedIndex();
-        int selectedId = 0;
+        int selectionIndex = cbx6.getSelectedIndex();
+        String heading = cbx5.getSelectedItem().toString();
+        String subHeading = cbx6.getSelectedItem().toString();
+        ResultSet result;
         
         if (selectionIndex != 0) {
-            for (int i = 1; i < textArrayCbx4.size(); i++) {
-                if (textArrayCbx4.get(i).equals(selectedItem)) {
-                    selectedId = idArrayCbx4.get(i - 1);
-                }
-            }
+            result = db.getOutput(selectionIndex);
         
             if (formOutput == null) {
-                formOutput = new FormOutput(user);
+                formOutput = new FormOutput(user, heading, subHeading);
             }
             formOutput.setVisible(true);
+            formOutput.displayOutput(result);
             this.setVisible(false);
         }
     }//GEN-LAST:event_btnSubmitActionPerformed
@@ -491,10 +554,10 @@ public class FormMain extends javax.swing.JFrame {
         } else if (selectedIndex == 2) {
             user = null;
             if (login == null) {
-                    login = new LoginScreen();
-                }
-                login.setVisible(true);
-                this.setVisible(false);
+                login = new LoginScreen();
+            }
+            login.setVisible(true);
+            this.setVisible(false);
         }
     }//GEN-LAST:event_cbxActionsActionPerformed
 
