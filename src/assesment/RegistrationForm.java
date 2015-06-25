@@ -17,6 +17,7 @@ public class RegistrationForm extends javax.swing.JFrame {
     UserHandler handler;
     Validator validator;
     Accountcreation myaccCreat;
+    LoginScreen login;
     
     ArrayList<String> stateArray = new ArrayList<>();
     ArrayList<String> monthArray = new ArrayList<>();
@@ -301,6 +302,11 @@ public class RegistrationForm extends javax.swing.JFrame {
         btnBack.setMaximumSize(new java.awt.Dimension(80, 28));
         btnBack.setMinimumSize(new java.awt.Dimension(80, 28));
         btnBack.setPreferredSize(new java.awt.Dimension(80, 28));
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -449,6 +455,14 @@ public class RegistrationForm extends javax.swing.JFrame {
     private void cbxYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxYearActionPerformed
         calcDays();
     }//GEN-LAST:event_cbxYearActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        if (login == null) {
+                login = new LoginScreen();
+            }
+            login.setVisible(true);
+            this.setVisible(false);
+    }//GEN-LAST:event_btnBackActionPerformed
 
     private boolean checkFields() {
         boolean triggered;
