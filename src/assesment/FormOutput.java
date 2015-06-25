@@ -30,12 +30,17 @@ public class FormOutput extends javax.swing.JFrame {
         
         user = passUser;
         
-        txtHeading.setText(heading);
-        txtSubHeading.setText("- " + subHeading + " -");
+        if (heading != null) {
+            txtHeading.setText(heading);
+        } else {
+            txtHeading.setText("Default Heading");
+        }
         
-        DBInterface db = new DBInterface();
-        ResultSet result = db.getOutput(2);
-        displayOutput(result);
+        if (subHeading != null) {
+            txtSubHeading.setText("- " + subHeading + " -");
+        } else {
+            txtSubHeading.setText("- Default Sub Heading -");
+        }
     }
 
     /**
